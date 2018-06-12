@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\TaoBao\Class1.cs" />
+    <Compile Include="Core\TaoBao\TaoBaoUtils.cs" />
     <Compile Include="Core\TaoBao\TaoBaoWebService.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -93,10 +94,22 @@
     <Compile Include="Model\AskAll.cs" />
     <Compile Include="Model\AttrList.cs" />
     <Compile Include="Model\AttrValues.cs" />
+    <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Currency.cs" />
     <Compile Include="Model\Data.cs" />
     <Compile Include="Model\Data60.cs" />
     <Compile Include="Model\Datas.cs" />
+    <Compile Include="Model\DbEntity\Sp_customProperty.cs" />
+    <Compile Include="Model\DbEntity\sp_customPropertyValue.cs" />
+    <Compile Include="Model\DbEntity\sp_foodSecurity.cs" />
+    <Compile Include="Model\DbEntity\sp_item.cs" />
+    <Compile Include="Model\DbEntity\sp_itemContent.cs" />
+    <Compile Include="Model\DbEntity\sp_pictures.cs" />
+    <Compile Include="Model\DbEntity\sp_property.cs" />
+    <Compile Include="Model\DbEntity\sp_sellProperty.cs" />
+    <Compile Include="Model\DbEntity\sp_shopSort.cs" />
+    <Compile Include="Model\DbEntity\sp_sysSort.cs" />
+    <Compile Include="Model\DbTypeConverter.cs" />
     <Compile Include="Model\DefaultModel.cs" />
     <Compile Include="Model\Delivery.cs" />
     <Compile Include="Model\DeliveryFees.cs" />
@@ -106,8 +119,10 @@
     <Compile Include="Model\DetailInfos.cs" />
     <Compile Include="Model\DiscountPriceRange.cs" />
     <Compile Include="Model\DownloadEndViewEntity.cs" />
+    <Compile Include="Model\EntityCustom.cs" />
     <Compile Include="Model\EvaluatesItem.cs" />
     <Compile Include="Model\Extras.cs" />
+    <Compile Include="Model\Field.cs" />
     <Compile Include="Model\FreightInfo.cs" />
     <Compile Include="Model\FxItemDetail.cs" />
     <Compile Include="Model\FxItemWeidianEntity.cs" />
@@ -124,6 +139,7 @@
     <Compile Include="Model\GoodView.cs" />
     <Compile Include="Model\GroupPropsItem.cs" />
     <Compile Include="Model\ImageList.cs" />
+    <Compile Include="Util\ImageOperator.cs" />
     <Compile Include="Model\Images.cs" />
     <Compile Include="Model\Info.cs" />
     <Compile Include="Model\Item60.cs" />
@@ -197,6 +213,18 @@
     <Compile Include="Model\skuValue.cs" />
     <Compile Include="Model\Status.cs" />
     <Compile Include="Model\SysClass.cs" />
+    <Compile Include="Model\Taobao\ProductItem.cs" />
+    <Compile Include="Model\Taobao\PropertyAliasViewEntity.cs" />
+    <Compile Include="Model\Taobao\PropsViewEntity.cs" />
+    <Compile Include="Model\Taobao\SellNewProInfo.cs" />
+    <Compile Include="Model\Taobao\Sys_shopShip.cs" />
+    <Compile Include="Model\Taobao\Sys_sizeDetail.cs" />
+    <Compile Include="Model\Taobao\Sys_sizeGroup.cs" />
+    <Compile Include="Model\Taobao\Sys_sysProperty.cs" />
+    <Compile Include="Model\Taobao\Sys_sysPropertyValue.cs" />
+    <Compile Include="Model\Taobao\Sys_sysSort.cs" />
+    <Compile Include="Model\Taobao\ValuesConnectUtil.cs" />
+    <Compile Include="Model\Taobao\WrapCharType.cs" />
     <Compile Include="Model\TBShieldChkInfoEntity.cs" />
     <Compile Include="Model\ThorItemWeidianEntity.cs" />
     <Compile Include="Model\ThorResults.cs" />
@@ -213,7 +241,12 @@
     <Compile Include="Util\Base64.cs" />
     <Compile Include="Util\CommonApiClient.cs" />
     <Compile Include="Util\DataConvert.cs" />
+    <Compile Include="Util\DataTableToEntity.cs" />
     <Compile Include="Util\DbUtil.cs" />
+    <Compile Include="Util\LocalFileOperater.cs" />
+    <Compile Include="Util\Log.cs" />
+    <Compile Include="Util\TransPictureType.cs" />
+    <Compile Include="Util\UrlUtil.cs" />
     <Compile Include="Util\Utils.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -246,9 +279,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\DbEntity\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

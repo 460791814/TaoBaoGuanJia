@@ -22,12 +22,12 @@ namespace TaoBaoGuanJia
         {
             Test();
 
-            TaoBaoCaiJi();
+          //  TaoBaoCaiJi();
         }
 
         private void Test()
         {
-            SQLiteHelper.CreateDBFile();
+           var dd= DataHelper.GetSysSortList();
         }
 
         private void TaoBaoCaiJi()
