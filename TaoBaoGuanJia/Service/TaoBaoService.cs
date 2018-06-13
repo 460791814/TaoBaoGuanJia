@@ -33,11 +33,17 @@ namespace TaoBaoGuanJia.Service
         /// 采集入库
         /// </summary>
         /// <param name="productId"></param>
-        public void CollectToDB(int productId)
+        public void CollectToDB(string productId)
         {
             string onlineKey = productId.ToString();
             ItemGetResponse itemGetResponse = new TaoBaoWebService().GetItemGetMobileResponseByOnlinekeyNew(onlineKey, 0);
-           
+            DownloadDetailTaobaoService taoBaoService = new DownloadDetailTaobaoService();
+            DownloadItemInfoViewEntity viewEntity = new DownloadItemInfoViewEntity();
+            viewEntity.SourceShop = new Sys_shop() { Sysid=1 };
+         
+            taoBaoService.Download(itemGetResponse, viewEntity, onlineKey);
+
+
         }
         /// <summary>
         /// 批量导出淘宝助理文件

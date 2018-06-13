@@ -20,14 +20,18 @@ namespace TaoBaoGuanJia
 
         private void btn_caiji_Click(object sender, EventArgs e)
         {
-            Test();
-
-          //  TaoBaoCaiJi();
+            //  Test();
+            new TaoBaoService().CollectToDB("568769081629");
+         
         }
 
         private void Test()
         {
-           var dd= DataHelper.GetSysSortList();
+          int a=  DataHelper.InsertSpItem(new Model.Sp_item() {
+                 Name="123",
+                 
+            });
+           // var dd= DataHelper.GetSysSortList();
         }
 
         private void TaoBaoCaiJi()

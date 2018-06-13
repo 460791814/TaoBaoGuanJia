@@ -153,5 +153,12 @@ namespace TaoBaoGuanJia.Helper
         {
             return System.Environment.CurrentDirectory;
         }
+
+        public static bool TaoBaoCItemPicShieldCheck = false;
+        public static bool TaoBaoSellProperyPic = false;
+        public static bool TaoBaoSnatchPromoPrice = false;
+        public static bool TaoBaoSnatchSellPoint = false;
+        public static bool TaoBaoFirstMianPic = false;
+
     }
 }
