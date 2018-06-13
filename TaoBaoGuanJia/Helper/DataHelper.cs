@@ -72,6 +72,28 @@ namespace TaoBaoGuanJia.Helper
             }
             return list;
         }
+
+        internal static string GetSysConfig(string v1, string v2, string v3, string v4)
+        {
+            string text = "select * from sys_sysConfig where sectionGroup={0} and sectionName={1} and configKey={2}";
+
+            DataTable dataTable = SQLiteHelper.GetDataTable(text);
+            Sys_sysConfig c = DbUtil.DataTableToEntityList<Sys_sysConfig>(dataTable)?.FirstOrDefault();
+            return (c==null? v4 : c.Configvalue);
+        }
+        public static DataTable GetSysConfigList(int sortId)
+        {
+            string text = "select * from sys_sysConfig " ;
+
+            DataTable dataTable = SQLiteHelper.GetDataTable(text);
+            return dataTable;
+        }
+
+        internal static Sys_sysSort GetSortBySysIdAndKeys(int sysid, string cid)
+        {
+            return GetSysSortList().Find(a => a.Keys == cid);
+        }
+
         public static DataTable GetSizeDetailTableByTypeCode(string typeCode, int sysId)
         {
             string sql = "select * from Sys_sizeDetail with(nolock) where sysId=" + sysId + " and GroupType='" + DbUtil.OerateSpecialChar(typeCode) + "' and del=0";

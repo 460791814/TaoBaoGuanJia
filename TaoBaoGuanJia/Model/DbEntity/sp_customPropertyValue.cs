@@ -1,112 +1,182 @@
-﻿using System; 
-using System.Text;
-using System.Collections.Generic; 
+using TaoBaoGuanJia.Util;
+using System;
+using System.Collections.Generic;
 using System.Data;
-namespace TaoBaoGuanJia.Model{
-	 	//sp_customPropertyValue
-		public class Sp_customPropertyValue
+namespace TaoBaoGuanJia.Model
+{
+	public class Sp_customPropertyValue : BaseEntity
 	{
-   		     
-      	/// <summary>
-		/// id
-        /// </summary>		
-		private int _id;
-        public int id
-        {
-            get{ return _id; }
-            set{ _id = value; }
-        }        
-		/// <summary>
-		/// itemId
-        /// </summary>		
-		private int _itemid;
-        public int itemId
-        {
-            get{ return _itemid; }
-            set{ _itemid = value; }
-        }        
-		/// <summary>
-		/// sysId
-        /// </summary>		
-		private int _sysid;
-        public int sysId
-        {
-            get{ return _sysid; }
-            set{ _sysid = value; }
-        }        
-		/// <summary>
-		/// customPropertyId
-        /// </summary>		
-		private int _custompropertyid;
-        public int customPropertyId
-        {
-            get{ return _custompropertyid; }
-            set{ _custompropertyid = value; }
-        }        
-		/// <summary>
-		/// customPropertyName
-        /// </summary>		
-		private string _custompropertyname;
-        public string customPropertyName
-        {
-            get{ return _custompropertyname; }
-            set{ _custompropertyname = value; }
-        }        
-		/// <summary>
-		/// customPropertyValue
-        /// </summary>		
-		private string _custompropertyvalue;
-        public string customPropertyValue
-        {
-            get{ return _custompropertyvalue; }
-            set{ _custompropertyvalue = value; }
-        }        
-		/// <summary>
-		/// modifyTime
-        /// </summary>		
-		private DateTime _modifytime;
-        public DateTime modifyTime
-        {
-            get{ return _modifytime; }
-            set{ _modifytime = value; }
-        }        
-		/// <summary>
-		/// picFile
-        /// </summary>		
-		private string _picfile;
-        public string picFile
-        {
-            get{ return _picfile; }
-            set{ _picfile = value; }
-        }        
-		/// <summary>
-		/// customPropertyValueId
-        /// </summary>		
-		private string _custompropertyvalueid;
-        public string customPropertyValueId
-        {
-            get{ return _custompropertyvalueid; }
-            set{ _custompropertyvalueid = value; }
-        }        
-		/// <summary>
-		/// customPropertyAliasName
-        /// </summary>		
-		private string _custompropertyaliasname;
-        public string customPropertyAliasName
-        {
-            get{ return _custompropertyaliasname; }
-            set{ _custompropertyaliasname = value; }
-        }        
-		/// <summary>
-		/// Custompropertyvaluename
-        /// </summary>		
-		private string _custompropertyvaluename;
-        public string Custompropertyvaluename
-        {
-            get{ return _custompropertyvaluename; }
-            set{ _custompropertyvaluename = value; }
-        }        
-		   
+		private EntityCustom entityCus;
+		public override EntityCustom EntityCustom
+		{
+			get
+			{
+				return this.entityCus;
+			}
+		}
+		public int Id
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["id"]);
+			}
+			set
+			{
+				this.entityCus["id"] = value;
+			}
+		}
+		public int Itemid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["itemid"]);
+			}
+			set
+			{
+				this.entityCus["itemid"] = value;
+			}
+		}
+		public int Sysid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["sysid"]);
+			}
+			set
+			{
+				this.entityCus["sysid"] = value;
+			}
+		}
+		public int Custompropertyid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["custompropertyid"]);
+			}
+			set
+			{
+				this.entityCus["custompropertyid"] = value;
+			}
+		}
+		public string Custompropertyname
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["custompropertyname"]);
+			}
+			set
+			{
+				this.entityCus["custompropertyname"] = value;
+			}
+		}
+		public string Custompropertyvalue
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["custompropertyvalue"]);
+			}
+			set
+			{
+				this.entityCus["custompropertyvalue"] = value;
+			}
+		}
+		public string PicFile
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["picFile"]);
+			}
+			set
+			{
+				this.entityCus["picFile"] = value;
+			}
+		}
+		public DateTime Modifytime
+		{
+			get
+			{
+				return DataConvert.ToDateTime(this.entityCus["modifytime"]);
+			}
+			set
+			{
+				this.entityCus["modifytime"] = value;
+			}
+		}
+		public string Custompropertyvalueid
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["custompropertyvalueid"]);
+			}
+			set
+			{
+				this.entityCus["custompropertyvalueid"] = value;
+			}
+		}
+		public string Custompropertyaliasname
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["custompropertyaliasname"]);
+			}
+			set
+			{
+				this.entityCus["custompropertyaliasname"] = value;
+			}
+		}
+		public string Custompropertyvaluename
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["Custompropertyvaluename"]);
+			}
+			set
+			{
+				this.entityCus["Custompropertyvaluename"] = value;
+			}
+		}
+		public Sp_customPropertyValue()
+		{
+			this.entityCus = new EntityCustom("sp_customPropertyValue");
+		}
+		public Sp_customPropertyValue Clone()
+		{
+			return new Sp_customPropertyValue
+			{
+				entityCus = this.entityCus.Clone()
+			};
+		}
+		public static string ConnectValuesWithChar(IList<Sp_customPropertyValue> list, string fieldName, char connectChar, WrapCharType wrapCharType, bool trim)
+		{
+			if (list == null || list.Count <= 0)
+			{
+				return null;
+			}
+			IList<EntityCustom> list2 = new List<EntityCustom>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				list2.Add(list[i].EntityCustom);
+			}
+			return ValuesConnectUtil.ConnectValuesWithChar(list2, fieldName, connectChar, wrapCharType, trim);
+		}
+		public static string ConnectValuesWithChar(IList<Sp_customPropertyValue> list, string fieldName, WrapCharType wrapCharType, bool trim)
+		{
+			return Sp_customPropertyValue.ConnectValuesWithChar(list, fieldName, ',', wrapCharType, trim);
+		}
+		public static IList<Sp_customPropertyValue> TransDataTableToEntityList(DataTable dt)
+		{
+			IList<Sp_customPropertyValue> list = new List<Sp_customPropertyValue>();
+			Sp_customPropertyValue sp_customPropertyValue = null;
+			for (int i = 0; i < dt.Rows.Count; i++)
+			{
+				sp_customPropertyValue = new Sp_customPropertyValue();
+				foreach (DataColumn dataColumn in dt.Columns)
+				{
+					sp_customPropertyValue.EntityCustom.SetValue(dataColumn.ColumnName, dt.Rows[i][dataColumn]);
+				}
+				list.Add(sp_customPropertyValue);
+			}
+			return list;
+		}
 	}
 }
-

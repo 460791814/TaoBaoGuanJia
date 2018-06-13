@@ -1,85 +1,149 @@
-﻿using System; 
-using System.Text;
-using System.Collections.Generic; 
+using TaoBaoGuanJia.Util;
+using System;
+using System.Collections.Generic;
 using System.Data;
-namespace TaoBaoGuanJia.Model{
-	 	//sp_sysSort
-		public class Sp_sysSort
-    {
-   		     
-      	/// <summary>
-		/// id
-        /// </summary>		
-		private int _id;
-        public int id
-        {
-            get{ return _id; }
-            set{ _id = value; }
-        }        
-		/// <summary>
-		/// itemId
-        /// </summary>		
-		private int _itemid;
-        public int itemId
-        {
-            get{ return _itemid; }
-            set{ _itemid = value; }
-        }        
-		/// <summary>
-		/// shopId
-        /// </summary>		
-		private int _shopid;
-        public int shopId
-        {
-            get{ return _shopid; }
-            set{ _shopid = value; }
-        }        
-		/// <summary>
-		/// sysId
-        /// </summary>		
-		private int _sysid;
-        public int sysId
-        {
-            get{ return _sysid; }
-            set{ _sysid = value; }
-        }        
-		/// <summary>
-		/// sysSortId
-        /// </summary>		
-		private int _syssortid;
-        public int sysSortId
-        {
-            get{ return _syssortid; }
-            set{ _syssortid = value; }
-        }        
-		/// <summary>
-		/// sysSortName
-        /// </summary>		
-		private string _syssortname;
-        public string sysSortName
-        {
-            get{ return _syssortname; }
-            set{ _syssortname = value; }
-        }        
-		/// <summary>
-		/// sysSortPath
-        /// </summary>		
-		private string _syssortpath;
-        public string sysSortPath
-        {
-            get{ return _syssortpath; }
-            set{ _syssortpath = value; }
-        }        
-		/// <summary>
-		/// modifyTime
-        /// </summary>		
-		private DateTime _modifytime;
-        public DateTime modifyTime
-        {
-            get{ return _modifytime; }
-            set{ _modifytime = value; }
-        }        
-		   
+namespace TaoBaoGuanJia.Model
+{
+	public class Sp_sysSort : BaseEntity
+	{
+		private EntityCustom entityCus;
+		public override EntityCustom EntityCustom
+		{
+			get
+			{
+				return this.entityCus;
+			}
+		}
+		public int Id
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["id"]);
+			}
+			set
+			{
+				this.entityCus["id"] = value;
+			}
+		}
+		public int Itemid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["itemid"]);
+			}
+			set
+			{
+				this.entityCus["itemid"] = value;
+			}
+		}
+		public int Shopid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["shopid"]);
+			}
+			set
+			{
+				this.entityCus["shopid"] = value;
+			}
+		}
+		public int Sysid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["sysid"]);
+			}
+			set
+			{
+				this.entityCus["sysid"] = value;
+			}
+		}
+		public int Syssortid
+		{
+			get
+			{
+				return DataConvert.ToInt(this.entityCus["syssortid"]);
+			}
+			set
+			{
+				this.entityCus["syssortid"] = value;
+			}
+		}
+		public string Syssortname
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["syssortname"]);
+			}
+			set
+			{
+				this.entityCus["syssortname"] = value;
+			}
+		}
+		public string Syssortpath
+		{
+			get
+			{
+				return DataConvert.ToString(this.entityCus["syssortpath"]);
+			}
+			set
+			{
+				this.entityCus["syssortpath"] = value;
+			}
+		}
+		public DateTime Modifytime
+		{
+			get
+			{
+				return DataConvert.ToDateTime(this.entityCus["modifytime"]);
+			}
+			set
+			{
+				this.entityCus["modifytime"] = value;
+			}
+		}
+		public Sp_sysSort()
+		{
+			this.entityCus = new EntityCustom("sp_sysSort");
+		}
+		public Sp_sysSort Clone()
+		{
+			return new Sp_sysSort
+			{
+				entityCus = this.entityCus.Clone()
+			};
+		}
+		public static string ConnectValuesWithChar(IList<Sp_sysSort> list, string fieldName, char connectChar, WrapCharType wrapCharType, bool trim)
+		{
+			if (list == null || list.Count <= 0)
+			{
+				return null;
+			}
+			IList<EntityCustom> list2 = new List<EntityCustom>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				list2.Add(list[i].EntityCustom);
+			}
+			return ValuesConnectUtil.ConnectValuesWithChar(list2, fieldName, connectChar, wrapCharType, trim);
+		}
+		public static string ConnectValuesWithChar(IList<Sp_sysSort> list, string fieldName, WrapCharType wrapCharType, bool trim)
+		{
+			return Sp_sysSort.ConnectValuesWithChar(list, fieldName, ',', wrapCharType, trim);
+		}
+		public static IList<Sp_sysSort> TransDataTableToEntityList(DataTable dt)
+		{
+			IList<Sp_sysSort> list = new List<Sp_sysSort>();
+			Sp_sysSort sp_sysSort = null;
+			for (int i = 0; i < dt.Rows.Count; i++)
+			{
+				sp_sysSort = new Sp_sysSort();
+				foreach (DataColumn dataColumn in dt.Columns)
+				{
+					sp_sysSort.EntityCustom.SetValue(dataColumn.ColumnName, dt.Rows[i][dataColumn]);
+				}
+				list.Add(sp_sysSort);
+			}
+			return list;
+		}
 	}
 }
-

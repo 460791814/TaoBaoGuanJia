@@ -74,7 +74,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\TaoBao\BaseSnatcher.cs" />
     <Compile Include="Core\TaoBao\Class1.cs" />
+    <Compile Include="Core\TaoBao\DownloadDetailTaobaoService.cs" />
+    <Compile Include="Core\TaoBao\GatherTaobaoUseWebService.cs" />
     <Compile Include="Core\TaoBao\TaoBaoUtils.cs" />
     <Compile Include="Core\TaoBao\TaoBaoWebService.cs" />
     <Compile Include="Form1.cs">
@@ -99,6 +102,8 @@
     <Compile Include="Model\Data.cs" />
     <Compile Include="Model\Data60.cs" />
     <Compile Include="Model\Datas.cs" />
+    <Compile Include="Model\DbEntity\DownloadItemInfoViewEntity.cs" />
+    <Compile Include="Model\DbEntity\ItemDetailTaobaoViewEntity.cs" />
     <Compile Include="Model\DbEntity\Sp_customProperty.cs" />
     <Compile Include="Model\DbEntity\sp_customPropertyValue.cs" />
     <Compile Include="Model\DbEntity\sp_foodSecurity.cs" />
@@ -139,6 +144,10 @@
     <Compile Include="Model\GoodView.cs" />
     <Compile Include="Model\GroupPropsItem.cs" />
     <Compile Include="Model\ImageList.cs" />
+    <Compile Include="Model\Taobao\ProductInfo.cs" />
+    <Compile Include="Model\Taobao\Sys_shop.cs" />
+    <Compile Include="Model\Taobao\Sys_shopSort.cs" />
+    <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Util\ImageOperator.cs" />
     <Compile Include="Model\Images.cs" />
     <Compile Include="Model\Info.cs" />
