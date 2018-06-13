@@ -135,6 +135,7 @@
     <Compile Include="Model\FxOldResults.cs" />
     <Compile Include="Model\FxResults.cs" />
     <Compile Include="Model\FxStatus.cs" />
+    <Compile Include="Model\GetItemPromoPrice.cs" />
     <Compile Include="Model\GoodClassResponse.cs" />
     <Compile Include="Model\GoodImage.cs" />
     <Compile Include="Model\GoodListResponse.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Model\Taobao\ProductInfo.cs" />
     <Compile Include="Model\Taobao\Sys_shop.cs" />
     <Compile Include="Model\Taobao\Sys_shopSort.cs" />
+    <Compile Include="Model\Taobao\Sys_sysAddress.cs" />
     <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Util\ImageOperator.cs" />
     <Compile Include="Model\Images.cs" />

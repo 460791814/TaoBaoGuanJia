@@ -157,5 +157,23 @@ namespace TaoBaoGuanJia.Helper
             return GetSysPropertyValueList().FindAll(a => a.Propertyid == v);
           
         }
+
+        internal static Sys_sysAddress GetAddressBySysIdAndCode(int sysId, string state)
+        {
+            //todo
+            throw new NotImplementedException();
+        }
+
+        internal static IList<Sys_shopShip> GetShopShipsByShopId(int shopId)
+        {
+            //todo
+            throw new NotImplementedException();
+        }
+
+        internal static IList<Sys_shopSort> GetShopSortsByShopId(int shopId)
+        {
+            //todo
+            throw new NotImplementedException();
+        }
     }
 }
