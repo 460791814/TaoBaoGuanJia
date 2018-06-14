@@ -48,9 +48,21 @@ namespace TaoBaoGuanJia.Service
         /// <summary>
         /// 批量导出淘宝助理文件
         /// </summary>
-        public void ExportToCsv(List<int> itemList)
+        public void ExportToCsv(List<string> itemList)
         {
-
+            TaoBaoExport export = new TaoBaoExport();
+            List<string[]> _outputList = new List<string[]>();
+            _outputList.Add(new string[] { "version 1.00" });
+            _outputList.Add(ConfigHelper.TaoBaoHeaderFieldRow);
+            _outputList.Add(ConfigHelper.TaoBaoHeaderRow);
+            List<ProductItem> list = DataHelper.GetProductItemList(string.Join(",",itemList.ToArray()));
+            foreach (var item in list)
+            {
+                _outputList.Add(export.ConvertProductToDic(item, @"F:\csv\"));
+            }
+           
+    
+            export.WriteDicToFile(@"F:\csv\113.csv", _outputList);
         }
 
     }

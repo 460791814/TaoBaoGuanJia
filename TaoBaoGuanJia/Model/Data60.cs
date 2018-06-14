@@ -23,7 +23,7 @@ namespace TaoBaoGuanJia.Model
 			set;
 		}
 
-		[JsonProperty]
+		[JsonProperty(PropertyName = "params")]
 		public Params60 Params
 		{
 			get;

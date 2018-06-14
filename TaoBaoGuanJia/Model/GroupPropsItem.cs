@@ -5,7 +5,7 @@ namespace TaoBaoGuanJia.Model
 {
 	public class GroupPropsItem
 	{
-		[JsonProperty]
+		[JsonProperty(PropertyName = "基本信息")]
 		public List<Dictionary<string, string>> BaseInfo
 		{
 			get;

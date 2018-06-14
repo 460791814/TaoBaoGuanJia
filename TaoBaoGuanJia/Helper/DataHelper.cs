@@ -66,6 +66,14 @@ namespace TaoBaoGuanJia.Helper
             DataTable dataTable = SQLiteHelper.GetDataTable(text);
             return dataTable;
         }
+
+        internal static List<ProductItem> GetProductItemList(string ids)
+        {
+      
+            string strSql = "select p.*,s.sysSortId,c.content,c.wirelessdesc from sp_item p left join sp_sysSort s on s.itemId=p.id left join sp_itemContent c on p.id=c.itemId where id in ("+ ids + ") and p.del=0 and p.sysId=1 order by p.showurl asc";
+            return conn.Query<ProductItem>(strSql.ToString(),null)?.ToList(); ;
+        }
+
         public static Sys_sysProperty GetPropertyById(int id)
         {
             return GetPropertyList().Find(a => a.Id == id);
@@ -211,6 +219,12 @@ namespace TaoBaoGuanJia.Helper
             return DbUtil.DataTableToEntityList<Sys_shopSort>(dataTable);
         }
 
+        internal static string GetSortKeyBySortId(int sysSortId)
+        {
+            string sql = "SELECT * from tb_sysSort where  id="+sysSortId;
+            return conn.Query<Sys_sysSort>(sql, null)?.FirstOrDefault()?.Keys;
+        }
+
         internal static Sys_sysSort GetSortById(int id)
         {
             return GetSysSortList().Find(a => a.Id == id);
@@ -273,6 +287,7 @@ namespace TaoBaoGuanJia.Helper
         }
         internal static void InsertSpProperty(Sp_property spPropertyList)
         {
+            if (spPropertyList == null) { return; }
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sp_property(");
             strSql.Append("isSellPro,Aliasname,picUrl,url,itemId,shopId,sysId,propertyId,name,value,modifyTime,propertyKeys");
@@ -283,6 +298,7 @@ namespace TaoBaoGuanJia.Helper
         }
         internal static void InsertSpItemContent(Sp_itemContent spItemContent)
         {
+            if (spItemContent == null) { return; }
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sp_itemContent(");
             strSql.Append("itemId,content,uploadFailMsg,faultreason,modifyDate,wirelessdesc");
@@ -294,6 +310,7 @@ namespace TaoBaoGuanJia.Helper
 
         internal static void InsertFoodSecurity(Sp_foodSecurity spFodSecurity)
         {
+            if (spFodSecurity == null) { return; }
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sp_foodSecurity(");
             strSql.Append("period,foodAdditive,supplier,productDateStart,productDateEnd,stockDateStart,stockDateEnd,healthProductNo,itemId,prdLicenseNo,designCode,factory,factorySite,contact,mix,planStorage");
@@ -303,8 +320,33 @@ namespace TaoBaoGuanJia.Helper
             conn.Execute(strSql.ToString(), spFodSecurity);
         }
 
+        internal static IList<Sp_pictures> GetPhotos(string itemId)
+        {
+            string sql = "SELECT * from Sp_pictures where itemId=" + itemId;
+            return conn.Query<Sp_pictures>(sql, null)?.ToList();
+        }
+
+        internal static Sp_foodSecurity GetFoodSecurityByItemId(string itemId)
+        {
+            string sql = "SELECT * from Sp_foodSecurity where itemId=" + itemId;
+            return conn.Query<Sp_foodSecurity>(sql, null)?.FirstOrDefault();
+        }
+
+        internal static Sp_sysSort GetSpSysSort(int itemId)
+        {
+            string sql = "SELECT * from Sp_sysSort where itemId="+ itemId;
+            return conn.Query<Sp_sysSort>(sql, null)?.FirstOrDefault();
+        }
+
+        internal static IList<Sys_sysEnumItem> GetEnumItemByCode(Sys_sysEnumItem model)
+        {
+            string sql = "SELECT * from sys_sysEnumItem where enumtypecode=@enumtypecode and sysid=@Sysid";
+            return conn.Query<Sys_sysEnumItem>(sql, model)?.ToList();
+        }
+
         internal static void InsertSpSysSort(Sp_sysSort spSysSort)
         {
+            if (spSysSort == null) { return; }
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sp_sysSort(");
             strSql.Append("itemId,shopId,sysId,sysSortId,sysSortName,sysSortPath,modifyTime");
@@ -323,6 +365,7 @@ namespace TaoBaoGuanJia.Helper
 
         internal static int InsertSpItem(Sp_item spItem)
         {
+            if (spItem == null) { return 0; }
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sp_item(");
             strSql.Append("photo,sellType,sellTypeName,price,priceRise,nums,limitNums,validDate,shipWay,useShipTpl,name,shipTplId,shipWayName,shipSlow,shipFast,shipEMS,onSell,onSellDate,onSellHour,onSellMin,payType,sysId,isRmd,isReturn,isTicket,ticketName,isRepair,repairName,isAutoPub,isVirtual,sszgUserName,kcItemId,shopId,code,kcItemName,state,onlineKey,listTime,delistTime,photoModified,detailUrl,showUrl,shopSortIds,newOrOld,shopSortNames,operateTypes,crtDate,modifyDate,synchState,synchDetail,del,discount,integrity,weight,province,subStock,size,afterSaleId,isPaipaiNewStock,barcode,sellPoint,provinceName,city,cityName");
@@ -331,6 +374,18 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") ;select last_insert_rowid() newid;");
 
             return conn.Query<int>(strSql.ToString(), spItem).FirstOrDefault();
+        }
+
+        internal static IList<Sp_property> GetPropertyListByItemId(int itemId)
+        {
+            string sql = "SELECT * from Sp_property where itemId=" + itemId;
+            return conn.Query<Sp_property>(sql, null)?.ToList();
+        }
+
+        internal static IList<Sp_sellProperty> GetSellProperty(int itemId, int sysId)
+        {
+            string sql = "SELECT * from Sp_sellProperty where itemId=" + itemId;
+            return conn.Query<Sp_sellProperty>(sql, null)?.ToList();
         }
     }
 }

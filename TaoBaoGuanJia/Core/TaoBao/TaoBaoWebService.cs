@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using TaoBaoGuanJia.Helper;
 using TaoBaoGuanJia.Model;
 using TaoBaoGuanJia.Util;
 using Top.Api.Domain;
@@ -525,17 +526,17 @@ namespace TaoBaoGuanJia.Core.TaoBao
             if (dicProNameAndProValue != null && dicProNameAndProValue.Count > 0)
             {
                 int num2 = 0;
-                // Sys_sysSort val = DataHelper.GetSysSort(cid);// ToolServer.get_ProductData().GetSortBySysIdAndKeys(1, cid);
-                object val = null;
+                 Sys_sysSort val = DataHelper.GetSysSort(cid);// ToolServer.get_ProductData().GetSortBySysIdAndKeys(1, cid);
+            
                 if (val != null)
                 {
-                   // num2 = val.Id;
+                    num2 = val.Id;
                 }
                 if (num2 > 0)
                 {
                     Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
-                    DataTable propertyDtBySortId = null;// DataHelper.GetPropertyDtBySortId(num2);
-                    DataTable propertyValueDtBySortId = null;// DataHelper.GetPropertyValueDtBySortId(num2);// ToolServer.get_ProductData().GetPropertyValueDtBySortId(num2);
+                    DataTable propertyDtBySortId = DataHelper.GetPropertyDtBySortId(num2);
+                    DataTable propertyValueDtBySortId =  DataHelper.GetPropertyValueDtBySortId(num2);// ToolServer.get_ProductData().GetPropertyValueDtBySortId(num2);
                     foreach (KeyValuePair<string, string> item in dicProNameAndProValue)
                     {
                         try
@@ -651,7 +652,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
                         }
                         catch (Exception ex)
                         {
-                          //  Log.WriteLog(ex);
+                            Log.WriteLog(ex);
                         }
                     }
                     if (sellProInfoList != null && sellProInfoList.Count > 0)

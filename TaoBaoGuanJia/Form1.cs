@@ -21,7 +21,7 @@ namespace TaoBaoGuanJia
         private void btn_caiji_Click(object sender, EventArgs e)
         {
             //  Test();
-            new TaoBaoService().CollectToDB("568769081629");
+            new TaoBaoService().CollectToDB("566940414408");
          
         }
 
@@ -38,6 +38,12 @@ namespace TaoBaoGuanJia
         {
             TaoBaoService taobaoService = new TaoBaoService();
 
+        }
+
+        private void btn_export_Click(object sender, EventArgs e)
+        {
+            TaoBaoService taobaoService = new TaoBaoService();
+            taobaoService.ExportToCsv(new List<string>() { "7" });
         }
     }
 }

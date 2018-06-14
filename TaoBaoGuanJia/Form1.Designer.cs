@@ -55,6 +55,7 @@
             this.btn_export.TabIndex = 1;
             this.btn_export.Text = "导出CSV文件";
             this.btn_export.UseVisualStyleBackColor = true;
+            this.btn_export.Click += new System.EventHandler(this.btn_export_Click);
             // 
             // lab_url
             // 

@@ -152,9 +152,17 @@ namespace TaoBaoGuanJia.Core.TaoBao
         {
             int num = 0;
             num = DataHelper.InsertSpItem(viewEntity.SpItem);
-            viewEntity.SpItemContent.Itemid = num;
-            viewEntity.SpSysSort.Itemid = num;
-            viewEntity.SpFodSecurity.Itemid = num;
+            if (viewEntity.SpItemContent != null) {
+                viewEntity.SpItemContent.Itemid = num;
+            }
+            if (viewEntity.SpSysSort != null)
+            {
+                viewEntity.SpSysSort.Itemid = num;
+            }
+            if (viewEntity.SpFodSecurity != null)
+            {
+                viewEntity.SpFodSecurity.Itemid = num;
+            }
 
             DataHelper.InsertSpPictures(num, viewEntity.SpPicturesList);
             DataHelper.InsertSpItemContent(viewEntity.SpItemContent);

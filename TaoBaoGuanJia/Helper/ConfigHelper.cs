@@ -160,5 +160,6 @@ namespace TaoBaoGuanJia.Helper
         public static bool TaoBaoSnatchSellPoint = false;
         public static bool TaoBaoFirstMianPic = false;
 
+        public static bool IsExportMobileDesc = false;
     }
 }
