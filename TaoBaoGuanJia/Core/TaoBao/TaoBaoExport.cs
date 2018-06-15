@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -245,12 +247,58 @@ namespace TaoBaoGuanJia.Core.TaoBao
             {
                 productItem.Wirelessdesc = string.Empty;
             }
+            //下载PC内容图片
+            DownloadItemContentPic(productItem);
             if (!string.IsNullOrEmpty(productItem.OperateTypes))
             {
                 string stringToEscape = "{\"bathrobe_field_tag_image_1\" : \"\", \"bathrobe_field_tag_image_2\" : \"\",\"var_item_board_inspection_report\" : \"\",\"var_item_glove_inspection_report_1\" : \"\",\"var_item_light_inspection_report_2\" : \"\",\"var_org_auth_tri_c_code\" : \"" + productItem.OperateTypes + "\",\"var_tri_c_cer_image\" : \"\", \"var_tri_c_cer_image_2\" : \"\" }";
                 productItem.OperateTypes = Uri.EscapeDataString(stringToEscape);
             }
             return this.TaobaoPrepareCSVData(productItem);
+        }
+        private void DownloadItemContentPic(ProductItem productItem)
+        {
+
+            try
+            {
+          
+                if (productItem != null && !string.IsNullOrEmpty(productItem.Content))
+                {
+          
+                    string text = ConfigHelper.GetCsvPath();
+                   
+                        string text2 = GetChineseStr(productItem.Name).Trim().Replace(" ", "").Replace("\u3000", "")
+                            .Replace("/", "")
+                            .Replace("\\", "")
+                            .Replace(":", "")
+                            .Replace("*", "")
+                            .Replace("?", "")
+                            .Replace("\"", "")
+                            .Replace("<", "")
+                            .Replace(">", "")
+                            .Replace("|", "")
+                            .Replace("#", "");
+                        text = ((text2.IndexOfAny(Path.GetInvalidFileNameChars()) < 0) ? ((text2.Length > 10) ? (text + text2.Substring(text2.Length - 10, 10) + productItem.Id + "\\") : (text + text2 + productItem.Id + "\\")) : (text + productItem.Id + "\\"));
+                    Dictionary<string, string> _picMovedUrls = null;
+                    bool _uccorError = false;
+                    productItem.Content = DownloadContentPic.DownloadItemContentPic(productItem.Id, productItem.Content, text, productItem.IsTaobao5, ref _picMovedUrls, ref _uccorError);
+             
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Log.WriteLog("下载商品描述图片失败", ex);
+                }
+                catch
+                {
+                }
+            }
+            finally
+            {
+              
+            }
         }
         private string HandlePhoto(string itemId, string photoPath, string sortKey)
         {
@@ -366,216 +414,356 @@ namespace TaoBaoGuanJia.Core.TaoBao
             return list;
         }
 
-        //private string HandleMobileDesc(string wirelessdesc, string mobilePhotoPath)
-        //{
-        //    bool isExportMibleDesc2500k = false;
-        //    string a = string.Empty;
-        //    a = ToolServer.ConfigData.GetUserConfig("AppConfig", "ExpMobDescMode", this._exportPackageDao.ToolCode, "");
-        //    double num = 0.0;
-        //    if (a == "ExpMobDesc2500K")
-        //    {
-        //        num = 2621440.0;
-        //        isExportMibleDesc2500k = true;
-        //    }
-        //    else
-        //    {
-        //        if (a == "ExpMobDesc1500K")
-        //        {
-        //            num = 1572864.0;
-        //        }
-        //        else
-        //        {
-        //            if (a == "ExpMobDescWeb")
-        //            {
-        //                return wirelessdesc;
-        //            }
-        //        }
-        //    }
-        //    if (string.IsNullOrEmpty(wirelessdesc))
-        //    {
-        //        return wirelessdesc;
-        //    }
-        //    wirelessdesc = wirelessdesc.Replace("https://", "http://");
-        //    if (!Directory.Exists(mobilePhotoPath))
-        //    {
-        //        Directory.CreateDirectory(mobilePhotoPath);
-        //    }
-        //    string text = wirelessdesc;
-        //    if (string.IsNullOrEmpty(wirelessdesc))
-        //    {
-        //        return text;
-        //    }
-        //    Regex regex = new Regex("(?is)<img>([^<>]*?)</img>");
-        //    MatchCollection matchCollection = regex.Matches(text);
-        //    if (matchCollection != null && matchCollection.Count > 0)
-        //    {
-        //        try
-        //        {
-        //            int num2 = 0;
-        //            ToolServer.ConfigData.SetUserConfig("AppConfig", "DefaultConfig", "MobileDescDowning", "true");
-        //            string arg = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + new Random().Next(10);
-        //            int num3 = 0;
-        //            long num4 = 0L;
-        //            foreach (Match match in matchCollection)
-        //            {
-        //                if (match != null && !string.IsNullOrEmpty(match.Groups[1].Value))
-        //                {
-        //                    string value = match.Groups[1].Value;
-        //                    if (value.IndexOf("http://", StringComparison.OrdinalIgnoreCase) > -1)
-        //                    {
-        //                        num3++;
-        //                        bool flag = false;
-        //                        string fileName = arg + "-" + num3;
-        //                        string empty = string.Empty;
-        //                        try
-        //                        {
-        //                            string empty2 = string.Empty;
-        //                            bool flag2 = DownloadContentPic.DownLoadPicture(HttpUtility.HtmlDecode(value), mobilePhotoPath, fileName, out empty, ref flag, out empty2);
-        //                            if (flag2)
-        //                            {
-        //                                if (a == "ExpMobDesc2500K" || a == "ExpMobDesc1500K")
-        //                                {
-        //                                    Image image = Image.FromFile(empty);
-        //                                    if (image.Width < 480 || DataConvert.ToDecimal(image.Width) / DataConvert.ToDecimal(image.Height) > 8m)
-        //                                    {
-        //                                        string oldValue = "<img>" + value + "</img>";
-        //                                        text = text.Replace(oldValue, "");
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        List<string> list = this.HandleMobilePic(empty, 620, ref num2, isExportMibleDesc2500k);
-        //                                        string text2 = string.Empty;
-        //                                        if (list != null && list.Count > 0)
-        //                                        {
-        //                                            foreach (string current in list)
-        //                                            {
-        //                                                num4 += this.GetMobileDescAllImageSize(current);
-        //                                                text2 = text2 + "<img>" + current + "</img>";
-        //                                            }
-        //                                        }
-        //                                        if ((double)num4 >= num)
-        //                                        {
-        //                                            string oldValue2 = "<img>" + value + "</img>";
-        //                                            text = text.Replace(oldValue2, "");
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            if (this.FilterImage(1843.2f, 0.125, empty))
-        //                                            {
-        //                                                string oldValue3 = "<img>" + value + "</img>";
-        //                                                text = text.Replace(oldValue3, "");
-        //                                            }
-        //                                            else
-        //                                            {
-        //                                                if (!string.IsNullOrEmpty(text2))
-        //                                                {
-        //                                                    string oldValue4 = "<img>" + value + "</img>";
-        //                                                    text = text.Replace(oldValue4, text2);
-        //                                                }
-        //                                            }
-        //                                        }
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    string newValue = "<img>" + empty + "</img>";
-        //                                    string oldValue5 = "<img>" + value + "</img>";
-        //                                    text = text.Replace(oldValue5, newValue);
-        //                                }
-        //                                continue;
-        //                            }
-        //                            string oldValue6 = "<img>" + value + "</img>";
-        //                            text = text.Replace(oldValue6, "");
-        //                            continue;
-        //                        }
-        //                        catch (Exception)
-        //                        {
-        //                            string oldValue7 = "<img>" + value + "</img>";
-        //                            text = text.Replace(oldValue7, "");
-        //                            continue;
-        //                        }
-        //                    }
-        //                    if (File.Exists(value))
-        //                    {
-        //                        try
-        //                        {
-        //                            if (a == "ExpMobDesc2500K" || a == "ExpMobDesc1500K")
-        //                            {
-        //                                string text3 = string.Empty;
-        //                                List<string> list2 = new List<string>();
-        //                                list2 = this.HandleMobilePic(value, 480, ref num2, true);
-        //                                foreach (string current2 in list2)
-        //                                {
-        //                                    text3 = current2;
-        //                                }
-        //                                if (this.GetMobileDescAllImageSize(value) < this.GetMobileDescAllImageSize(text3))
-        //                                {
-        //                                    text3 = value;
-        //                                }
-        //                                if (this.FilterImage(1843.2f, 0.125, text3))
-        //                                {
-        //                                    File.Delete(value);
-        //                                    string oldValue8 = "<img>" + value + "</img>";
-        //                                    text = text.Replace(oldValue8, "");
-        //                                }
-        //                                else
-        //                                {
-        //                                    num4 += this.GetMobileDescAllImageSize(text3);
-        //                                    if ((double)num4 >= num)
-        //                                    {
-        //                                        string oldValue9 = "<img>" + value + "</img>";
-        //                                        text = text.Replace(oldValue9, "");
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        string text4 = Path.Combine(mobilePhotoPath, text3.Substring(text3.LastIndexOf("\\") + 1));
-        //                                        if (File.Exists(text4))
-        //                                        {
-        //                                            File.SetAttributes(text4, FileAttributes.Normal);
-        //                                            File.Copy(text3, text4, true);
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            File.Copy(text3, text4, false);
-        //                                        }
-        //                                        text = text.Replace(value, text4);
-        //                                    }
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                string text5 = Path.Combine(mobilePhotoPath, value.Substring(value.LastIndexOf("\\") + 1));
-        //                                if (File.Exists(text5))
-        //                                {
-        //                                    File.SetAttributes(text5, FileAttributes.Normal);
-        //                                    File.Copy(value, text5, true);
-        //                                }
-        //                                else
-        //                                {
-        //                                    File.Copy(value, text5, false);
-        //                                }
-        //                                text = text.Replace(value, text5);
-        //                            }
-        //                        }
-        //                        catch (Exception ex)
-        //                        {
-        //                            Log.WriteLog("复制手机本地详情图片失败：", ex);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex2)
-        //        {
-        //            Log.WriteLog("导出数据包，处理手机详情时出错：", ex2);
-        //        }
-        //        finally
-        //        {
-        //           // ToolServer.ConfigData.SetUserConfig("AppConfig", "DefaultConfig", "MobileDescDowning", "false");
-        //        }
-        //    }
-        //    return text;
-        //}
+        private string HandleMobileDesc(string wirelessdesc, string mobilePhotoPath)
+        {
+            bool isExportMibleDesc2500k = false;
+            string a = string.Empty;
+            a = "ExpMobDesc1500K";// ToolServer.ConfigData.GetUserConfig("AppConfig", "ExpMobDescMode", this._exportPackageDao.ToolCode, "");
+            double num = 0.0;
+            if (a == "ExpMobDesc2500K")
+            {
+                num = 2621440.0;
+                isExportMibleDesc2500k = true;
+            }
+            else
+            {
+                if (a == "ExpMobDesc1500K")
+                {
+                    num = 1572864.0;
+                }
+                else
+                {
+                    if (a == "ExpMobDescWeb")
+                    {
+                        return wirelessdesc;
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(wirelessdesc))
+            {
+                return wirelessdesc;
+            }
+            wirelessdesc = wirelessdesc.Replace("https://", "http://");
+            if (!Directory.Exists(mobilePhotoPath))
+            {
+                Directory.CreateDirectory(mobilePhotoPath);
+            }
+            string text = wirelessdesc;
+            if (string.IsNullOrEmpty(wirelessdesc))
+            {
+                return text;
+            }
+            Regex regex = new Regex("(?is)<img>([^<>]*?)</img>");
+            MatchCollection matchCollection = regex.Matches(text);
+            if (matchCollection != null && matchCollection.Count > 0)
+            {
+                try
+                {
+                    int num2 = 0;
+                    //ToolServer.ConfigData.SetUserConfig("AppConfig", "DefaultConfig", "MobileDescDowning", "true");
+                    string arg = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + new Random().Next(10);
+                    int num3 = 0;
+                    long num4 = 0L;
+                    foreach (Match match in matchCollection)
+                    {
+                        if (match != null && !string.IsNullOrEmpty(match.Groups[1].Value))
+                        {
+                            string value = match.Groups[1].Value;
+                            if (value.IndexOf("http://", StringComparison.OrdinalIgnoreCase) > -1)
+                            {
+                                num3++;
+                                bool flag = false;
+                                string fileName = arg + "-" + num3;
+                                string empty = string.Empty;
+                                try
+                                {
+                                    string empty2 = string.Empty;
+                                    bool flag2 = DownloadContentPic.DownLoadPicture(HttpUtility.HtmlDecode(value), mobilePhotoPath, fileName, out empty, ref flag, out empty2);
+                                    if (flag2)
+                                    {
+                                        if (a == "ExpMobDesc2500K" || a == "ExpMobDesc1500K")
+                                        {
+                                            Image image = Image.FromFile(empty);
+                                            if (image.Width < 480 || DataConvert.ToDecimal(image.Width) / DataConvert.ToDecimal(image.Height) > 8m)
+                                            {
+                                                string oldValue = "<img>" + value + "</img>";
+                                                text = text.Replace(oldValue, "");
+                                            }
+                                            else
+                                            {
+                                                List<string> list = this.HandleMobilePic(empty, 620, ref num2, isExportMibleDesc2500k);
+                                                string text2 = string.Empty;
+                                                if (list != null && list.Count > 0)
+                                                {
+                                                    foreach (string current in list)
+                                                    {
+                                                        num4 += this.GetMobileDescAllImageSize(current);
+                                                        text2 = text2 + "<img>" + current + "</img>";
+                                                    }
+                                                }
+                                                if ((double)num4 >= num)
+                                                {
+                                                    string oldValue2 = "<img>" + value + "</img>";
+                                                    text = text.Replace(oldValue2, "");
+                                                }
+                                                else
+                                                {
+                                                    if (this.FilterImage(1843.2f, 0.125, empty))
+                                                    {
+                                                        string oldValue3 = "<img>" + value + "</img>";
+                                                        text = text.Replace(oldValue3, "");
+                                                    }
+                                                    else
+                                                    {
+                                                        if (!string.IsNullOrEmpty(text2))
+                                                        {
+                                                            string oldValue4 = "<img>" + value + "</img>";
+                                                            text = text.Replace(oldValue4, text2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            string newValue = "<img>" + empty + "</img>";
+                                            string oldValue5 = "<img>" + value + "</img>";
+                                            text = text.Replace(oldValue5, newValue);
+                                        }
+                                        continue;
+                                    }
+                                    string oldValue6 = "<img>" + value + "</img>";
+                                    text = text.Replace(oldValue6, "");
+                                    continue;
+                                }
+                                catch (Exception)
+                                {
+                                    string oldValue7 = "<img>" + value + "</img>";
+                                    text = text.Replace(oldValue7, "");
+                                    continue;
+                                }
+                            }
+                            if (File.Exists(value))
+                            {
+                                try
+                                {
+                                    if (a == "ExpMobDesc2500K" || a == "ExpMobDesc1500K")
+                                    {
+                                        string text3 = string.Empty;
+                                        List<string> list2 = new List<string>();
+                                        list2 = this.HandleMobilePic(value, 480, ref num2, true);
+                                        foreach (string current2 in list2)
+                                        {
+                                            text3 = current2;
+                                        }
+                                        if (this.GetMobileDescAllImageSize(value) < this.GetMobileDescAllImageSize(text3))
+                                        {
+                                            text3 = value;
+                                        }
+                                        if (this.FilterImage(1843.2f, 0.125, text3))
+                                        {
+                                            File.Delete(value);
+                                            string oldValue8 = "<img>" + value + "</img>";
+                                            text = text.Replace(oldValue8, "");
+                                        }
+                                        else
+                                        {
+                                            num4 += this.GetMobileDescAllImageSize(text3);
+                                            if ((double)num4 >= num)
+                                            {
+                                                string oldValue9 = "<img>" + value + "</img>";
+                                                text = text.Replace(oldValue9, "");
+                                            }
+                                            else
+                                            {
+                                                string text4 = Path.Combine(mobilePhotoPath, text3.Substring(text3.LastIndexOf("\\") + 1));
+                                                if (File.Exists(text4))
+                                                {
+                                                    File.SetAttributes(text4, FileAttributes.Normal);
+                                                    File.Copy(text3, text4, true);
+                                                }
+                                                else
+                                                {
+                                                    File.Copy(text3, text4, false);
+                                                }
+                                                text = text.Replace(value, text4);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        string text5 = Path.Combine(mobilePhotoPath, value.Substring(value.LastIndexOf("\\") + 1));
+                                        if (File.Exists(text5))
+                                        {
+                                            File.SetAttributes(text5, FileAttributes.Normal);
+                                            File.Copy(value, text5, true);
+                                        }
+                                        else
+                                        {
+                                            File.Copy(value, text5, false);
+                                        }
+                                        text = text.Replace(value, text5);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.WriteLog("复制手机本地详情图片失败：", ex);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    Log.WriteLog("导出数据包，处理手机详情时出错：", ex2);
+                }
+                finally
+                {
+                    // ToolServer.ConfigData.SetUserConfig("AppConfig", "DefaultConfig", "MobileDescDowning", "false");
+                }
+            }
+            return text;
+        }
+        private bool FilterImage(float lenght, double lengthWidthRatio, string imagePath)
+        {
+            bool flag = false;
+            if (File.Exists(imagePath))
+            {
+                try
+                {
+                    Image image = Image.FromFile(imagePath);
+                    if (image != null)
+                    {
+                        double num = (double)image.Width / (double)image.Height;
+                        double num2 = (double)image.Height / (double)image.Width;
+                        if (num <= lengthWidthRatio || num2 <= lengthWidthRatio)
+                        {
+                            flag = true;
+                        }
+                        if (!flag)
+                        {
+                            using (MemoryStream memoryStream = new MemoryStream())
+                            {
+                                string text = string.Empty;
+                                if (!string.IsNullOrEmpty(imagePath) && imagePath.LastIndexOf(".") > 0)
+                                {
+                                    text = imagePath.Substring(imagePath.LastIndexOf("."));
+                                }
+                                if (string.IsNullOrEmpty(text))
+                                {
+                                    text = ".jpeg";
+                                }
+                                ImageFormat formatByExtension = GetFormatByExtension(text);
+                                Bitmap bitmap = new Bitmap(image);
+                                bitmap.Save(memoryStream, formatByExtension);
+                                byte[] buffer = memoryStream.GetBuffer();
+                                if ((float)buffer.Length <= lenght)
+                                {
+                                    flag = true;
+                                }
+                                bitmap.Dispose();
+                            }
+                        }
+                        image.Dispose();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLog(ex);
+                }
+            }
+            return flag;
+        }
+        private static ImageFormat GetFormatByExtension(string extension)
+        {
+            if (string.IsNullOrEmpty(extension))
+            {
+                return ImageFormat.Jpeg;
+            }
+            extension = extension.ToLower().Trim();
+            string a;
+            ImageFormat result;
+            if ((a = extension) != null)
+            {
+                if (a == ".jpg")
+                {
+                    result = ImageFormat.Jpeg;
+                    return result;
+                }
+                if (a == ".jpeg")
+                {
+                    result = ImageFormat.Jpeg;
+                    return result;
+                }
+                if (a == ".gif")
+                {
+                    result = ImageFormat.Gif;
+                    return result;
+                }
+                if (a == ".png")
+                {
+                    result = ImageFormat.Png;
+                    return result;
+                }
+                if (a == ".bmp")
+                {
+                    result = ImageFormat.Bmp;
+                    return result;
+                }
+            }
+            result = ImageFormat.Jpeg;
+            return result;
+        }
+        private List<string> HandleMobilePic(string sourceFileName, int width, ref int totalByteSize, bool isExportMibleDesc2500k)
+        {
+            int num = totalByteSize;
+            int num2 = 0;
+            string newPicFileName = sourceFileName.Insert(sourceFileName.LastIndexOf('.'), "_dmjbs");
+            Image image = Image.FromFile(sourceFileName);
+            int num3 = image.Width;
+            if (num3 > width)
+            {
+                num3 = width;
+            }
+            List<string> list = DownloadContentPic.CompressDescJpeg(sourceFileName, newPicFileName, num3, 960, 102400L, out num2, totalByteSize);
+            List<string> list2 = new List<string>();
+            if (!isExportMibleDesc2500k)
+            {
+                num2 = 0;
+                totalByteSize = num;
+                foreach (string current in list)
+                {
+                    newPicFileName = current.Insert(current.LastIndexOf('.'), "_dmjbs");
+                    List<string> list3 = DownloadContentPic.CompressDescJpeg(current, newPicFileName, 480, 960, 102400L, out num2, totalByteSize);
+                    totalByteSize += num2;
+                    string item = string.Empty;
+                    foreach (string current2 in list3)
+                    {
+                        item = current2;
+                        if (this.GetMobileDescAllImageSize(current) < this.GetMobileDescAllImageSize(current2))
+                        {
+                            item = current;
+                        }
+                        list2.Add(item);
+                    }
+                }
+                num2 = 0;
+                isExportMibleDesc2500k = false;
+                list = list2;
+            }
+            totalByteSize += num2;
+            return list;
+        }
+        private long GetMobileDescAllImageSize(string imagePaht)
+        {
+            long result = 0L;
+            if (!string.IsNullOrEmpty(imagePaht) && File.Exists(imagePaht))
+            {
+                byte[] array = File.ReadAllBytes(imagePaht);
+                result = (long)array.Length;
+            }
+            return result;
+        }
         private string GetChineseStr(string str)
         {
             if (string.IsNullOrEmpty(str))

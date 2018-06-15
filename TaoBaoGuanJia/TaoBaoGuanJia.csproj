@@ -51,6 +51,10 @@
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.40\lib\net35\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -150,12 +154,19 @@
     <Compile Include="Model\GoodView.cs" />
     <Compile Include="Model\GroupPropsItem.cs" />
     <Compile Include="Model\ImageList.cs" />
+    <Compile Include="Model\Image\AddWaterMarkEntity.cs" />
+    <Compile Include="Model\Image\MarkType.cs" />
+    <Compile Include="Model\Image\PictureWaterMark.cs" />
     <Compile Include="Model\Taobao\ProductInfo.cs" />
     <Compile Include="Model\Taobao\Sys_shop.cs" />
     <Compile Include="Model\Taobao\Sys_shopSort.cs" />
     <Compile Include="Model\Taobao\Sys_sysAddress.cs" />
     <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Model\Taobao\Sys_sysEnumItem.cs" />
+    <Compile Include="Util\BitType.cs" />
+    <Compile Include="Util\DataDetect.cs" />
+    <Compile Include="Util\DownloadAndChangePic.cs" />
+    <Compile Include="Util\DownloadContentPic.cs" />
     <Compile Include="Util\ImageCompress.cs" />
     <Compile Include="Util\ImageOperator.cs" />
     <Compile Include="Model\Images.cs" />
@@ -261,12 +272,15 @@
     <Compile Include="Util\DataConvert.cs" />
     <Compile Include="Util\DataTableToEntity.cs" />
     <Compile Include="Util\DbUtil.cs" />
+    <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\LocalFileOperater.cs" />
     <Compile Include="Util\Log.cs" />
+    <Compile Include="Util\MD5Crypt.cs" />
     <Compile Include="Util\PermutationAndCombination.cs" />
     <Compile Include="Util\TransPictureType.cs" />
     <Compile Include="Util\UrlUtil.cs" />
     <Compile Include="Util\Utils.cs" />
+    <Compile Include="Util\WebRequestFactory.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -303,6 +317,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dll\HtmlAgilityPack.dll" />
     <Content Include="Dll\TopSdk.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

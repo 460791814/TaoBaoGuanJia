@@ -161,5 +161,18 @@ namespace TaoBaoGuanJia.Helper
         public static bool TaoBaoFirstMianPic = false;
 
         public static bool IsExportMobileDesc = false;
+        /// <summary>
+        /// 获取CSV保存目录
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCsvPath() {
+            return System.Environment.CurrentDirectory+"/csv/";
+        }
+        /// <summary>
+        /// 同一个图片是否重复下载
+        /// </summary>
+        public static bool SamePicDownloadOneTime = false;
+
+        public static string ExportDescSize = "2M";
     }
 }

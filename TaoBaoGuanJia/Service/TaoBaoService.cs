@@ -58,11 +58,11 @@ namespace TaoBaoGuanJia.Service
             List<ProductItem> list = DataHelper.GetProductItemList(string.Join(",",itemList.ToArray()));
             foreach (var item in list)
             {
-                _outputList.Add(export.ConvertProductToDic(item, @"F:\csv\"));
+                _outputList.Add(export.ConvertProductToDic(item, ConfigHelper.GetCsvPath()));
             }
            
     
-            export.WriteDicToFile(@"F:\csv\113.csv", _outputList);
+            export.WriteDicToFile(ConfigHelper.GetCsvPath() + "\\113.csv", _outputList);
         }
 
     }
