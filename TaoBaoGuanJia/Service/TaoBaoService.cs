@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -50,6 +51,15 @@ namespace TaoBaoGuanJia.Service
         /// </summary>
         public void ExportToCsv(List<string> itemList)
         {
+            string timeStamp = Utils.GetTimeStamp();
+            //csv保存路径
+            string csvPath = Path.Combine(ConfigHelper.GetCsvPath() , timeStamp + ".csv");
+            //图片保存路径
+            string contentPath = Path.Combine(ConfigHelper.GetCsvPath(), timeStamp);
+            if (!Directory.Exists(contentPath))
+            {
+                Directory.CreateDirectory(contentPath);
+            }
             TaoBaoExport export = new TaoBaoExport();
             List<string[]> _outputList = new List<string[]>();
             _outputList.Add(new string[] { "version 1.00" });
@@ -58,11 +68,11 @@ namespace TaoBaoGuanJia.Service
             List<ProductItem> list = DataHelper.GetProductItemList(string.Join(",",itemList.ToArray()));
             foreach (var item in list)
             {
-                _outputList.Add(export.ConvertProductToDic(item, ConfigHelper.GetCsvPath()));
+                _outputList.Add(export.ConvertProductToDic(item, contentPath));
             }
            
     
-            export.WriteDicToFile(ConfigHelper.GetCsvPath() + "\\113.csv", _outputList);
+            export.WriteDicToFile(csvPath, _outputList);
         }
 
     }

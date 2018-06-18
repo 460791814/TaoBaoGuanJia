@@ -314,7 +314,7 @@ namespace TaoBaoGuanJia.Util
             }
             if (iEnd < PageCount) PageStr.Append(" <a href=\"" + LinkPage + "?pageindex=" + PageCount.ToString() + QueryStr.ToString() + "\"> .." + PageCount.ToString() + "</a>");
             if (CurrentPage < PageCount) PageStr.Append(" <a href=\"" + LinkPage + "?pageindex=" + (CurrentPage + 1) + QueryStr.ToString() + "\">下一页</a> ");
-            
+
             return PageStr.ToString();
         }
         public static string ShowPageForQsList(int DataSourceCount, int PageSize, int CurrentPage, int Nums)
@@ -350,14 +350,15 @@ namespace TaoBaoGuanJia.Util
                 }
                 if (((iBegin <= 1) && (iEnd >= PageCount)) || (i <= 1)) break;
             }
-            PageStr.Append("<p>共&nbsp;&nbsp;<span>"+DataSourceCount+"</span>&nbsp;&nbsp;&nbsp;件商品&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"red\">"+ CurrentPage + "</span></p>");
+            PageStr.Append("<p>共&nbsp;&nbsp;<span>" + DataSourceCount + "</span>&nbsp;&nbsp;&nbsp;件商品&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"red\">" + CurrentPage + "</span></p>");
 
             PageStr.Append("<div class=\"rss-page clearfix\">");
             if (CurrentPage > 1)
             {
                 PageStr.Append(" <a class=\"sprve\"  href=\"" + LinkPage + "?pageindex=" + (CurrentPage - 1) + QueryStr.ToString() + "\" title=\"上一页\" ></a> ");
             }
-            else {
+            else
+            {
                 PageStr.Append(" <a class=\"sprve\" disabled=\"disabled\"  href=\"" + LinkPage + "?pageindex=" + (CurrentPage - 1) + QueryStr.ToString() + "\" title=\"上一页\"></a> ");
             }
 
@@ -419,7 +420,7 @@ namespace TaoBaoGuanJia.Util
             }
             //PageStr.Append("<span class=\"rowscount\" title=\"每次最多显示10000条记录\">总数 " + DataSourceCount + "</span>");
 
-           
+
             if (CurrentPage > 1) PageStr.Append("<li class=\"paginate_button\"><a  href=\"" + LinkPage + "?pageindex=" + (CurrentPage - 1) + QueryStr.ToString() + "\">上一页</a></li> ");
             if (iBegin > 1) PageStr.Append(" <li class=\"paginate_button\"> <a class=\"page\" href=\"" + LinkPage + "?pageindex=1" + QueryStr.ToString() + "\">1..</a></li>");
             for (i = iBegin; i <= iEnd; i++)
@@ -429,7 +430,7 @@ namespace TaoBaoGuanJia.Util
                 else
                     PageStr.Append("<li class=\"paginate_button\"> <a   href=\"" + LinkPage + "?pageindex=" + i.ToString() + QueryStr.ToString() + "\">" + i.ToString() + "</a></li> ");
             }
-            
+
             if (iEnd < PageCount) PageStr.Append(" <li class=\"paginate_button\"><a class=\"page\" href=\"" + LinkPage + "?pageindex=" + PageCount.ToString() + QueryStr.ToString() + "\"> .." + PageCount.ToString() + "</a></li>");
             if (CurrentPage < PageCount) PageStr.Append("<li class=\"paginate_button\"> <a class=\"nextpage\" href=\"" + LinkPage + "?pageindex=" + (CurrentPage + 1) + QueryStr.ToString() + "\">下一页</a></li> ");
             //PageStr.Append(" <span class=\"jump\"><input name=\"page\" size=\"5\" type=\"text\" value=\"" + (CurrentPage + 1).ToString() + "\" class=\"pageinput\" maxlength=\"9\" /> <input type=\"button\" value=\"跳转\" class=\"gobutton\" onclick=\"window.location.href='" + LinkPage + "?page='+this.form.page.value+'" + QueryStr.ToString() + "'\" /></span>");
@@ -764,7 +765,7 @@ namespace TaoBaoGuanJia.Util
         {
             return !Regex.IsMatch(str, @"^\s*$|^c:\\con\\con$|[%,\*" + "\"" + @"\s\t\<\>\&]|游客|^Guest");
         }
- 
+
         /// <summary>
         /// 是否包含过滤符号
         /// </summary>
@@ -1259,7 +1260,8 @@ namespace TaoBaoGuanJia.Util
         /// <returns></returns>
         public static int GetInt(object Obj)
         {
-            if (Obj == null) {
+            if (Obj == null)
+            {
                 return 0;
             }
             return GetInt(Obj.ToString());
@@ -1646,7 +1648,7 @@ namespace TaoBaoGuanJia.Util
             string MonthStr = "0" + sTime.Month.ToString();
             return YearStr.Substring(2, 2) + MonthStr.Substring(MonthStr.Length - 2, 2) + "/";
         }
- 
+
         /// <summary>
         /// 生成一个GUID
         /// </summary>
@@ -1746,7 +1748,7 @@ namespace TaoBaoGuanJia.Util
                 return "File.Err:" + sPath;
             }
         }
- 
+
         /// <summary>
         /// 获取来源页面URL
         /// </summary>
@@ -2157,8 +2159,9 @@ namespace TaoBaoGuanJia.Util
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetConfig(string key) {
-            return ConfigurationManager.AppSettings[key]??"";
+        public static string GetConfig(string key)
+        {
+            return ConfigurationManager.AppSettings[key] ?? "";
         }
         public static string OerateSpecialChar(string str)
         {
@@ -2168,6 +2171,35 @@ namespace TaoBaoGuanJia.Util
             }
             str = str.Replace("'", "''");
             return str;
+        }
+        /// <summary> 
+        /// 获取时间戳 
+        /// </summary> 
+        /// <returns></returns> 
+        public static string GetTimeStamp()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalSeconds).ToString();
+        }
+        /// <summary>
+        /// 剔除文件名中的字符串中非法的字符
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static string GetFileNameWithOutInvalid(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return "";
+            }
+            fileName = fileName.Replace(" ", "").Replace("\u3000", "");//去除空格跟全角空白字符
+            StringBuilder builder = new StringBuilder(fileName);
+            foreach (char invalidChar in Path.GetInvalidFileNameChars())
+            {
+                // fileName.Replace(invalidChar.ToString(), string.Empty);
+                builder.Replace(invalidChar.ToString(), string.Empty);
+            }
+            return builder.ToString();
         }
     }
 }

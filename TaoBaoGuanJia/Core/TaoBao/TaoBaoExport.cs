@@ -14,7 +14,7 @@ using TaoBaoGuanJia.Util;
 
 namespace TaoBaoGuanJia.Core.TaoBao
 {
- 
+
     public class TaoBaoExport
     {
         public string[] TaobaoPrepareCSVData(ProductItem productItem)
@@ -172,7 +172,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             string onSellHour = DataConvert.ToString(productItem.OnSellHour).Trim();
             string onSellMin = DataConvert.ToString(productItem.OnSellMin).Trim();
             productItem.ActualNewOrOld = this.GetNewOrOld(newOrOld);
-            int sysId =1;
+            int sysId = 1;
             if (!string.IsNullOrEmpty(value))
             {
                 productItem.ProductSortKeys = DataHelper.GetSortKeyBySortId(productItem.SysSortId);
@@ -205,50 +205,15 @@ namespace TaoBaoGuanJia.Core.TaoBao
             bool flag = ConfigHelper.IsExportMobileDesc;// DataConvert.ToBoolean(ToolServer.ConfigData.GetUserConfig("AppConfig", "IsExportMobileDesc", this._exportPackageDao.ToolCode, "false"));
             if (flag)
             {
-                string text2 = (photoPath.EndsWith("\\") ? photoPath : (photoPath + "\\")) + "media\\";
-                if (true)
-                {
-                    string text3 = this.GetChineseStr(productItem.Name).Trim().Replace(" ", "").Replace("\u3000", "").Replace("/", "").Replace("\\", "").Replace(":", "").Replace("*", "").Replace("?", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("#", "");
-                    if (text3.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
-                    {
-                        text2 = text2 + productItem.Id + "\\";
-                    }
-                    else
-                    {
-                        if (text3.Length <= 10)
-                        {
-                            text2 = string.Concat(new object[]
-                            {
-                        text2,
-                        text3,
-                        productItem.Id,
-                        "\\"
-                            });
-                        }
-                        else
-                        {
-                            text2 = string.Concat(new object[]
-                            {
-                        text2,
-                        text3.Substring(text3.Length - 10, 10),
-                        productItem.Id,
-                        "\\"
-                            });
-                        }
-                    }
-                }
-                productItem.Wirelessdesc = "";// this.HandleMobileDesc(productItem.Wirelessdesc, text2);
-                //if (!string.IsNullOrEmpty(productItem.Wirelessdesc))
-                //{
-                //    this._exportPackageDao.UpdateItemWirelessdesc(productItem.Id, productItem.Wirelessdesc);
-                //}
+                string mobilePhotoPath = Path.Combine(photoPath, Utils.GetFileNameWithOutInvalid(productItem.Name) + productItem.Id + "\\m");
+                productItem.Wirelessdesc = this.HandleMobileDesc(productItem.Wirelessdesc, mobilePhotoPath);
             }
             else
             {
                 productItem.Wirelessdesc = string.Empty;
             }
             //下载PC内容图片
-            DownloadItemContentPic(productItem);
+            DownloadItemContentPic(productItem, photoPath);
             if (!string.IsNullOrEmpty(productItem.OperateTypes))
             {
                 string stringToEscape = "{\"bathrobe_field_tag_image_1\" : \"\", \"bathrobe_field_tag_image_2\" : \"\",\"var_item_board_inspection_report\" : \"\",\"var_item_glove_inspection_report_1\" : \"\",\"var_item_light_inspection_report_2\" : \"\",\"var_org_auth_tri_c_code\" : \"" + productItem.OperateTypes + "\",\"var_tri_c_cer_image\" : \"\", \"var_tri_c_cer_image_2\" : \"\" }";
@@ -256,33 +221,19 @@ namespace TaoBaoGuanJia.Core.TaoBao
             }
             return this.TaobaoPrepareCSVData(productItem);
         }
-        private void DownloadItemContentPic(ProductItem productItem)
+        private void DownloadItemContentPic(ProductItem productItem, string photoPath)
         {
 
             try
             {
-          
+
                 if (productItem != null && !string.IsNullOrEmpty(productItem.Content))
                 {
-          
-                    string text = ConfigHelper.GetCsvPath();
-                   
-                        string text2 = GetChineseStr(productItem.Name).Trim().Replace(" ", "").Replace("\u3000", "")
-                            .Replace("/", "")
-                            .Replace("\\", "")
-                            .Replace(":", "")
-                            .Replace("*", "")
-                            .Replace("?", "")
-                            .Replace("\"", "")
-                            .Replace("<", "")
-                            .Replace(">", "")
-                            .Replace("|", "")
-                            .Replace("#", "");
-                        text = ((text2.IndexOfAny(Path.GetInvalidFileNameChars()) < 0) ? ((text2.Length > 10) ? (text + text2.Substring(text2.Length - 10, 10) + productItem.Id + "\\") : (text + text2 + productItem.Id + "\\")) : (text + productItem.Id + "\\"));
+                    string path = Path.Combine(photoPath, Utils.GetFileNameWithOutInvalid(productItem.Name) + productItem.Id + "\\pc");
                     Dictionary<string, string> _picMovedUrls = null;
                     bool _uccorError = false;
-                    productItem.Content = DownloadContentPic.DownloadItemContentPic(productItem.Id, productItem.Content, text, productItem.IsTaobao5, ref _picMovedUrls, ref _uccorError);
-             
+                    productItem.Content = DownloadContentPic.DownloadItemContentPic(productItem.Id, productItem.Content, path, productItem.IsTaobao5, ref _picMovedUrls, ref _uccorError);
+
                 }
             }
             catch (Exception ex)
@@ -297,7 +248,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             }
             finally
             {
-              
+
             }
         }
         private string HandlePhoto(string itemId, string photoPath, string sortKey)
@@ -329,10 +280,11 @@ namespace TaoBaoGuanJia.Core.TaoBao
                         current.Picindex,
                         ":|;"
                     });
-                    string targetFileFullName = (photoPath.EndsWith("\\") ? photoPath : (photoPath + "\\")) + text2 + ".tbi";
-                    if (File.Exists(ConfigHelper.GetCurrentDomainDirectory() + localpath))
+                    string targetFileFullName = Path.Combine(photoPath, text2 + ".tbi");
+                    string targetFilePath = Path.Combine(ConfigHelper.GetCurrentDomainDirectory(), localpath);
+                    if (File.Exists(targetFilePath))
                     {
-                        ImageCompress.ChangeImage(ConfigHelper.GetCurrentDomainDirectory() + localpath, 512000L, targetFileFullName);
+                        ImageCompress.ChangeImage(targetFilePath, 512000L, targetFileFullName);
                     }
                 }
             }
@@ -416,6 +368,8 @@ namespace TaoBaoGuanJia.Core.TaoBao
 
         private string HandleMobileDesc(string wirelessdesc, string mobilePhotoPath)
         {
+
+  
             bool isExportMibleDesc2500k = false;
             string a = string.Empty;
             a = "ExpMobDesc1500K";// ToolServer.ConfigData.GetUserConfig("AppConfig", "ExpMobDescMode", this._exportPackageDao.ToolCode, "");
@@ -1285,7 +1239,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             {
         ','
             });
-            Sys_sysSort sys_sysSort =DataHelper.GetSortBySysIdAndKeys(1, productItem.SortKey);
+            Sys_sysSort sys_sysSort = DataHelper.GetSortBySysIdAndKeys(1, productItem.SortKey);
             if (sys_sysSort == null && !string.IsNullOrEmpty(productItem.SortKey))
             {
                 sys_sysSort = DataHelper.GetSortById(sys_sysSort.Id);
@@ -1303,7 +1257,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
                 }
                 if (sys_sizeDetail != null)
                 {
-                    Sys_sizeGroup sizeGroupByGroupOnlineID =DataHelper.GetSizeGroupByGroupOnlineID(sys_sysSort.SizeGroupType, sys_sizeDetail.GroupOnlineID, productItem.SysId);
+                    Sys_sizeGroup sizeGroupByGroupOnlineID = DataHelper.GetSizeGroupByGroupOnlineID(sys_sysSort.SizeGroupType, sys_sizeDetail.GroupOnlineID, productItem.SysId);
                     if (sizeGroupByGroupOnlineID != null)
                     {
                         if (sizeGroupByGroupOnlineID.GroupName == "其它")
@@ -1343,7 +1297,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             DataTable dataTable = new DataTable();
             if (spSysSort != null)
             {
-                dataTable =DataHelper.GetPropertyValueDtBySortId(spSysSort.Syssortid);
+                dataTable = DataHelper.GetPropertyValueDtBySortId(spSysSort.Syssortid);
             }
             List<List<string>> list = new List<List<string>>();
             if (dicProp != null && dicProp.Count > 0)
@@ -1680,7 +1634,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             {
                 string text = string.Empty;
                 string enumCode = "xjcd";
-                IList<Sys_sysEnumItem> enumItemByCode = DataHelper.GetEnumItemByCode(new Sys_sysEnumItem() {  Enumtypecode=enumCode,Sysid=1});
+                IList<Sys_sysEnumItem> enumItemByCode = DataHelper.GetEnumItemByCode(new Sys_sysEnumItem() { Enumtypecode = enumCode, Sysid = 1 });
                 foreach (Sys_sysEnumItem current in enumItemByCode)
                 {
                     if (current.Value.Equals(newOrOld.Trim()))

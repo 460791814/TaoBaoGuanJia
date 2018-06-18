@@ -15,7 +15,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
 {
    public class DownloadDetailTaobaoService
     {
-        public string ToolCode="SNATCH_4PLUS";
+        public string ToolCode="taobao";
         private bool IsSnatchPromoPrice => ConfigHelper.TaoBaoSnatchPromoPrice;// DataConvert.ToBoolean((object)ToolServer.get_ConfigData().GetUserConfig("AppConfig", base.ToolCode.ToUpper(), "SnatchPromoPrice", "false"));
 
         private bool IsSnatchSellPoint => ConfigHelper.TaoBaoSnatchSellPoint;// DataConvert.ToBoolean((object)ToolServer.get_ConfigData().GetUserConfig("AppConfig", base.ToolCode.ToUpper(), "SnatchSellPoint", "false"));

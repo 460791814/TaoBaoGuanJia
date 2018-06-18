@@ -88,11 +88,14 @@
     <Compile Include="Core\TaoBao\TaoBaoExport.cs" />
     <Compile Include="Core\TaoBao\TaoBaoUtils.cs" />
     <Compile Include="Core\TaoBao\TaoBaoWebService.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Extension\ControlsUtils.cs" />
+    <Compile Include="Extension\MainFormUtils.cs" />
+    <Compile Include="Extension\MessageBoxEx.cs" />
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\ConfigHelper.cs" />
     <Compile Include="Helper\DataHelper.cs" />
@@ -163,8 +166,10 @@
     <Compile Include="Model\Taobao\Sys_sysAddress.cs" />
     <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Model\Taobao\Sys_sysEnumItem.cs" />
+    <Compile Include="Service\TaoBaoThread.cs" />
     <Compile Include="Util\BitType.cs" />
     <Compile Include="Util\DataDetect.cs" />
+    <Compile Include="Extension\datagridviewCheckboxHeaderCell.cs" />
     <Compile Include="Util\DownloadAndChangePic.cs" />
     <Compile Include="Util\DownloadContentPic.cs" />
     <Compile Include="Util\ImageCompress.cs" />
@@ -281,8 +286,8 @@
     <Compile Include="Util\UrlUtil.cs" />
     <Compile Include="Util\Utils.cs" />
     <Compile Include="Util\WebRequestFactory.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

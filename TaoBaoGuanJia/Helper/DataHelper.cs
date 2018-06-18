@@ -387,5 +387,10 @@ namespace TaoBaoGuanJia.Helper
             string sql = "SELECT * from Sp_sellProperty where itemId=" + itemId;
             return conn.Query<Sp_sellProperty>(sql, null)?.ToList();
         }
+        internal static IList<Sp_item> GetProductItemList()
+        {
+            string sql = "SELECT * from Sp_item";
+            return conn.Query<Sp_item>(sql, null)?.ToList();
+        }
     }
 }
