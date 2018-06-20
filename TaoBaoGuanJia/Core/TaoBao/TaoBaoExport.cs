@@ -202,7 +202,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
                 productItem.CpvMemo = cpvMemo;
             }
             productItem.FoodParame = this.HandleFoodSecurity(text);
-            bool flag = ConfigHelper.IsExportMobileDesc;// DataConvert.ToBoolean(ToolServer.ConfigData.GetUserConfig("AppConfig", "IsExportMobileDesc", this._exportPackageDao.ToolCode, "false"));
+            bool flag = DataConvert.ToBoolean(DataHelper.GetUserConfigByKey(ConfigKey.IsExportMobileDesc)?.configvalue);
             if (flag)
             {
                 string mobilePhotoPath = Path.Combine(photoPath, Utils.GetFileNameWithOutInvalid(productItem.Name) + productItem.Id + "\\m");

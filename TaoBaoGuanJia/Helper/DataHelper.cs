@@ -392,5 +392,21 @@ namespace TaoBaoGuanJia.Helper
             string sql = "SELECT * from Sp_item";
             return conn.Query<Sp_item>(sql, null)?.ToList();
         }
+
+        public static void AddUserConfig(tb_userconfig model)
+        {
+            string strSql = "insert into tb_userconfig(configkey,configvalue) values (@configkey,@configvalue)";
+            conn.Execute(strSql, model);
+        }
+        public static void UpdateUserConfigByKey(tb_userconfig model)
+        {
+            string strSql = "update tb_userconfig set configvalue=@configvalue where configkey=@configkey";
+            conn.Execute(strSql, model);
+        }
+        public static tb_userconfig  GetUserConfigByKey(string key)
+        {
+            string strSql = "select * from  tb_userconfig  where configkey=@configkey";
+            return conn.Query<tb_userconfig>(strSql, new tb_userconfig() {  configkey=key})?.FirstOrDefault();
+        }
     }
 }

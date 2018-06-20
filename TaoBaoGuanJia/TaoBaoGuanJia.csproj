@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>TaoBaoGuanJia</RootNamespace>
     <AssemblyName>TaoBaoGuanJia</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -27,6 +27,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -82,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\TaoBao\BaseSnatcher.cs" />
-    <Compile Include="Core\TaoBao\Class1.cs" />
     <Compile Include="Core\TaoBao\DownloadDetailTaobaoService.cs" />
     <Compile Include="Core\TaoBao\GatherTaobaoUseWebService.cs" />
     <Compile Include="Core\TaoBao\TaoBaoExport.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="Extension\ControlsUtils.cs" />
     <Compile Include="Extension\MainFormUtils.cs" />
     <Compile Include="Extension\MessageBoxEx.cs" />
+    <Compile Include="Helper\ConfigKey.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +167,7 @@
     <Compile Include="Model\Taobao\Sys_sysAddress.cs" />
     <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Model\Taobao\Sys_sysEnumItem.cs" />
+    <Compile Include="Model\Taobao\tb_userconfig.cs" />
     <Compile Include="Service\TaoBaoThread.cs" />
     <Compile Include="Util\BitType.cs" />
     <Compile Include="Util\DataDetect.cs" />
@@ -297,6 +299,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
     <None Include="packages.config" />

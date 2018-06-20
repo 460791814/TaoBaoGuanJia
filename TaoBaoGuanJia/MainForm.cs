@@ -10,6 +10,9 @@ using TaoBaoGuanJia.Helper;
 using TaoBaoGuanJia.Service;
 using TaoBaoGuanJia.Extension;
 using TaoBaoGuanJia.Util;
+using TaoBaoGuanJia.Model;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TaoBaoGuanJia
 {
@@ -18,8 +21,23 @@ namespace TaoBaoGuanJia
         public MainForm()
         {
             InitializeComponent();
-    
+
             Init();
+            InitUserConfig();
+        }
+        /// <summary>
+        /// 初始化用户设置
+        /// </summary>
+        private void InitUserConfig()
+        {
+            tb_userconfig model = new tb_userconfig();
+            model.configkey = ConfigKey.IsExportMobileDesc;
+            var mobiledesc = DataHelper.GetUserConfigByKey(model.configkey);
+            if (mobiledesc != null)
+            {
+                chk_MobileDesc.Checked = DataConvert.ToBoolean(mobiledesc.configvalue);
+            }
+
         }
 
         private void Init()
@@ -30,7 +48,8 @@ namespace TaoBaoGuanJia
         private void btn_caiji_Click(object sender, EventArgs e)
         {
             string url = txt_url.Text;
-            if (string.IsNullOrEmpty(url)) {
+            if (string.IsNullOrEmpty(url))
+            {
                 MessageBoxEx.Show(this, "请输入淘宝(宝贝/店铺/列表)地址");
             }
             TaoBaoThread taoBaoThread = new TaoBaoThread();
@@ -124,13 +143,13 @@ namespace TaoBaoGuanJia
 
             ControlsUtils.mainForm = this;
             ControlsUtils.dataGridViewMaster = this.dataGridViewMaster;
- 
+
         }
         #region 多线程操作控件
         private delegate void RefreshDataGridViewMasterDelegate();
         public void InitDataGridViewMaster()
         {
-     
+
             var list = DataHelper.GetProductItemList();
             dataGridViewMaster.AutoGenerateColumns = false;
             dataGridViewMaster.DataSource = list;
@@ -145,7 +164,7 @@ namespace TaoBaoGuanJia
             this.dataGridViewMaster.Columns.Insert(0, checkboxCol);
 
             ch.OnCheckBoxClicked += new datagridviewcheckboxHeaderEventHander(ch_OnCheckBoxClicked);//关联单击事件  
-     
+
         }
 
         #endregion
@@ -189,7 +208,7 @@ namespace TaoBaoGuanJia
             float newx = (this.Width) / X;
             float newy = this.Height / Y;
             setControls(newx, newy, this);
-         //   this.Text = this.Width.ToString() + " " + this.Height.ToString();
+            //   this.Text = this.Width.ToString() + " " + this.Height.ToString();
 
         }
 
@@ -198,7 +217,27 @@ namespace TaoBaoGuanJia
         private void timer1_Tick(object sender, EventArgs e)
         {
             this.toolStripStatusLabel1.Text = "当前系统时间：" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-        
+
+        }
+
+        private void chk_MobileDesc_CheckedChanged(object sender, EventArgs e)
+        {
+            tb_userconfig model = new tb_userconfig();
+            model.configkey = ConfigKey.IsExportMobileDesc;
+            model.configvalue = chk_MobileDesc.Checked.ToString();
+            new Task(() =>
+            {
+                var config = DataHelper.GetUserConfigByKey(model.configkey);
+                if (config != null)
+                {
+                    DataHelper.UpdateUserConfigByKey(model);
+                }
+                else
+                {
+                    DataHelper.AddUserConfig(model);
+                }
+            }).Start();
+
         }
     }
 }

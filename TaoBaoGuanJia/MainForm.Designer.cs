@@ -29,26 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btn_caiji = new System.Windows.Forms.Button();
             this.btn_export = new System.Windows.Forms.Button();
             this.lab_url = new System.Windows.Forms.Label();
             this.txt_url = new System.Windows.Forms.TextBox();
             this.dataGridViewMaster = new System.Windows.Forms.DataGridView();
-            this.txt_log = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.statusStrip_main = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.toolStripProgressBar_main = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chk_MobileDesc = new System.Windows.Forms.CheckBox();
-            this.chk_SalePrice = new System.Windows.Forms.CheckBox();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.productName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,14 +44,26 @@
             this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.province = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.city = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_log = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chk_SalePrice = new System.Windows.Forms.CheckBox();
+            this.chk_MobileDesc = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.statusStrip_main = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar_main = new System.Windows.Forms.ToolStripProgressBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMaster)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.statusStrip_main.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.statusStrip_main.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_caiji
@@ -107,14 +107,14 @@
             // dataGridViewMaster
             // 
             this.dataGridViewMaster.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMaster.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMaster.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewMaster.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMaster.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -124,132 +124,20 @@
             this.code,
             this.province,
             this.city});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewMaster.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewMaster.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewMaster.Location = new System.Drawing.Point(10, 72);
             this.dataGridViewMaster.Name = "dataGridViewMaster";
             this.dataGridViewMaster.RowTemplate.Height = 27;
             this.dataGridViewMaster.Size = new System.Drawing.Size(960, 245);
             this.dataGridViewMaster.TabIndex = 4;
             this.dataGridViewMaster.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridViewMaster_RowStateChanged);
-            // 
-            // txt_log
-            // 
-            this.txt_log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_log.Location = new System.Drawing.Point(3, 21);
-            this.txt_log.Multiline = true;
-            this.txt_log.Name = "txt_log";
-            this.txt_log.ReadOnly = true;
-            this.txt_log.Size = new System.Drawing.Size(470, 150);
-            this.txt_log.TabIndex = 5;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(982, 603);
-            this.tabControl1.TabIndex = 6;
-            this.tabControl1.Tag = "";
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.lab_url);
-            this.tabPage1.Controls.Add(this.btn_caiji);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 574);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "宝贝复制";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // statusStrip_main
-            // 
-            this.statusStrip_main.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip_main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolStripStatusLabel2,
-            this.toolStripProgressBar_main});
-            this.statusStrip_main.Location = new System.Drawing.Point(0, 578);
-            this.statusStrip_main.Name = "statusStrip_main";
-            this.statusStrip_main.Size = new System.Drawing.Size(982, 25);
-            this.statusStrip_main.TabIndex = 7;
-            this.statusStrip_main.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(84, 20);
-            this.toolStripStatusLabel1.Text = "当前时间：";
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // toolStripProgressBar_main
-            // 
-            this.toolStripProgressBar_main.Name = "toolStripProgressBar_main";
-            this.toolStripProgressBar_main.Size = new System.Drawing.Size(100, 19);
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(84, 20);
-            this.toolStripStatusLabel2.Text = "任务进度：";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.txt_log);
-            this.groupBox1.Location = new System.Drawing.Point(6, 373);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(476, 174);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "输出";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.chk_SalePrice);
-            this.groupBox2.Controls.Add(this.chk_MobileDesc);
-            this.groupBox2.Location = new System.Drawing.Point(498, 373);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(468, 174);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "设置";
-            // 
-            // chk_MobileDesc
-            // 
-            this.chk_MobileDesc.AutoSize = true;
-            this.chk_MobileDesc.Location = new System.Drawing.Point(21, 35);
-            this.chk_MobileDesc.Name = "chk_MobileDesc";
-            this.chk_MobileDesc.Size = new System.Drawing.Size(89, 19);
-            this.chk_MobileDesc.TabIndex = 0;
-            this.chk_MobileDesc.Text = "手机详情";
-            this.chk_MobileDesc.UseVisualStyleBackColor = true;
-            // 
-            // chk_SalePrice
-            // 
-            this.chk_SalePrice.AutoSize = true;
-            this.chk_SalePrice.Location = new System.Drawing.Point(21, 67);
-            this.chk_SalePrice.Name = "chk_SalePrice";
-            this.chk_SalePrice.Size = new System.Drawing.Size(89, 19);
-            this.chk_SalePrice.TabIndex = 1;
-            this.chk_SalePrice.Text = "促销价格";
-            this.chk_SalePrice.UseVisualStyleBackColor = true;
             // 
             // id
             // 
@@ -308,6 +196,42 @@
             this.city.Name = "city";
             this.city.Width = 66;
             // 
+            // txt_log
+            // 
+            this.txt_log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_log.Location = new System.Drawing.Point(3, 21);
+            this.txt_log.Multiline = true;
+            this.txt_log.Name = "txt_log";
+            this.txt_log.ReadOnly = true;
+            this.txt_log.Size = new System.Drawing.Size(470, 150);
+            this.txt_log.TabIndex = 5;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(982, 603);
+            this.tabControl1.TabIndex = 6;
+            this.tabControl1.Tag = "";
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox3);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.lab_url);
+            this.tabPage1.Controls.Add(this.btn_caiji);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(974, 574);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "宝贝复制";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btn_export);
@@ -317,6 +241,83 @@
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "操作";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.chk_SalePrice);
+            this.groupBox2.Controls.Add(this.chk_MobileDesc);
+            this.groupBox2.Location = new System.Drawing.Point(498, 373);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(468, 174);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "设置";
+            // 
+            // chk_SalePrice
+            // 
+            this.chk_SalePrice.AutoSize = true;
+            this.chk_SalePrice.Location = new System.Drawing.Point(21, 67);
+            this.chk_SalePrice.Name = "chk_SalePrice";
+            this.chk_SalePrice.Size = new System.Drawing.Size(89, 19);
+            this.chk_SalePrice.TabIndex = 1;
+            this.chk_SalePrice.Text = "促销价格";
+            this.chk_SalePrice.UseVisualStyleBackColor = true;
+            // 
+            // chk_MobileDesc
+            // 
+            this.chk_MobileDesc.AutoSize = true;
+            this.chk_MobileDesc.Location = new System.Drawing.Point(21, 35);
+            this.chk_MobileDesc.Name = "chk_MobileDesc";
+            this.chk_MobileDesc.Size = new System.Drawing.Size(89, 19);
+            this.chk_MobileDesc.TabIndex = 0;
+            this.chk_MobileDesc.Text = "手机详情";
+            this.chk_MobileDesc.UseVisualStyleBackColor = true;
+            this.chk_MobileDesc.CheckedChanged += new System.EventHandler(this.chk_MobileDesc_CheckedChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.txt_log);
+            this.groupBox1.Location = new System.Drawing.Point(6, 373);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(476, 174);
+            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "输出";
+            // 
+            // statusStrip_main
+            // 
+            this.statusStrip_main.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip_main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2,
+            this.toolStripProgressBar_main});
+            this.statusStrip_main.Location = new System.Drawing.Point(0, 578);
+            this.statusStrip_main.Name = "statusStrip_main";
+            this.statusStrip_main.Size = new System.Drawing.Size(982, 25);
+            this.statusStrip_main.TabIndex = 7;
+            this.statusStrip_main.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(84, 20);
+            this.toolStripStatusLabel1.Text = "当前时间：";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(84, 20);
+            this.toolStripStatusLabel2.Text = "任务进度：";
+            // 
+            // toolStripProgressBar_main
+            // 
+            this.toolStripProgressBar_main.Name = "toolStripProgressBar_main";
+            this.toolStripProgressBar_main.Size = new System.Drawing.Size(100, 19);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -335,13 +336,13 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.statusStrip_main.ResumeLayout(false);
-            this.statusStrip_main.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.statusStrip_main.ResumeLayout(false);
+            this.statusStrip_main.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
