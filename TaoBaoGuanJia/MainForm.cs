@@ -14,6 +14,7 @@ using TaoBaoGuanJia.Model;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
+
 namespace TaoBaoGuanJia
 {
     public partial class MainForm : Form
@@ -30,14 +31,8 @@ namespace TaoBaoGuanJia
         /// </summary>
         private void InitUserConfig()
         {
-            tb_userconfig model = new tb_userconfig();
-            model.configkey = ConfigKey.IsExportMobileDesc;
-            var mobiledesc = DataHelper.GetUserConfigByKey(model.configkey);
-            if (mobiledesc != null)
-            {
-                chk_MobileDesc.Checked = DataConvert.ToBoolean(mobiledesc.configvalue);
-            }
-
+            chk_MobileDesc.Checked = UserSetting.Default.IsExportMobileDesc;
+         
         }
 
         private void Init()
@@ -75,6 +70,7 @@ namespace TaoBaoGuanJia
         }
         private void ch_OnCheckBoxClicked(object sender, datagridviewCheckboxHeaderEventArgs e)
         {
+           
             dataGridViewMaster.EndEdit();
             foreach (DataGridViewRow dgvRow in this.dataGridViewMaster.Rows)
             {
@@ -222,21 +218,9 @@ namespace TaoBaoGuanJia
 
         private void chk_MobileDesc_CheckedChanged(object sender, EventArgs e)
         {
-            tb_userconfig model = new tb_userconfig();
-            model.configkey = ConfigKey.IsExportMobileDesc;
-            model.configvalue = chk_MobileDesc.Checked.ToString();
-            new Task(() =>
-            {
-                var config = DataHelper.GetUserConfigByKey(model.configkey);
-                if (config != null)
-                {
-                    DataHelper.UpdateUserConfigByKey(model);
-                }
-                else
-                {
-                    DataHelper.AddUserConfig(model);
-                }
-            }).Start();
+            UserSetting.Default.IsExportMobileDesc = chk_MobileDesc.Checked;
+            UserSetting.Default.Save();
+        
 
         }
     }

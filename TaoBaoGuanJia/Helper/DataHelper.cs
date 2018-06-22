@@ -12,16 +12,34 @@ namespace TaoBaoGuanJia.Helper
 {
    public class DataHelper
     {
+        /// <summary>
+        /// 系统基础数据
+        /// </summary>
         private static SQLiteConnection conn = openDataConnection();
+        /// <summary>
+        /// 用户生产数据
+        /// </summary>
+        private static SQLiteConnection userConn = openUserDataConnection();
 
- 
+        private static SQLiteConnection openUserDataConnection()
+        {
+            var conn = SQLiteBaseRepository.SimpleDbConnection(System.Environment.CurrentDirectory + @"/data/tbgj.db");
+
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            return conn;
+        }
+
         /// <summary>
         /// 打开数据库链接；
         /// </summary>
         /// <returns></returns>
         private static SQLiteConnection openDataConnection()
         {
-            var conn = SQLiteBaseRepository.SimpleDbConnection();
+            var conn = SQLiteBaseRepository.SimpleDbConnection(System.Environment.CurrentDirectory + @"/data/data.db");
+ 
             if (conn.State == ConnectionState.Closed)
             {
                 conn.Open();
@@ -31,37 +49,26 @@ namespace TaoBaoGuanJia.Helper
 
         public static Sys_sysSort GetSysSort(String cid)
         {
-
-            return GetSysSortList().Find(a => a.Keys == cid);
-
+            string sql = "SELECT * from sys_sysSort where sysId=1 and del=0 and Keys=@Keys";
+            return conn.Query<Sys_sysSort>(sql,new Sys_sysSort() { Keys=cid })?.FirstOrDefault();
         }
-        public static List<Sys_sysSort> GetSysSortList()
-        {
-            string text = "select * from tb_sysSort where sysId=1 and del=0";
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_sysSort>(dataTable)?.ToList() ;
+  
 
-        }
-        public static List<Sys_sysProperty> GetPropertyList()
-        {
-            string text = "select * from tb_sysProperty";
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_sysProperty>(dataTable)?.ToList();
-
-        }
         public static List<Sys_sysProperty> GetPropertyBySortId(int sortId)
         {
-            return GetPropertyList().FindAll(a => a.Sortid == sortId);
+            string sql = "select * from sys_sysProperty where sortid=@sortid";
+            return conn.Query<Sys_sysProperty>(sql, new Sys_sysProperty() { Sortid = sortId })?.ToList();
+ 
         }
         public static DataTable GetPropertyDtBySortId(int sortId)
         {
-            string text = "select * from tb_sysProperty where sortid="+sortId;
+            string text = "select * from sys_sysProperty where sortid="+sortId;
             DataTable dataTable = SQLiteHelper.GetDataTable(text);
             return dataTable;
         }
         public static DataTable GetPropertyValueDtBySortId(int sortId)
         {
-            string text = "select * from tb_sysPropertyValue where sortid="+sortId;
+            string text = "select * from sys_sysPropertyValue where sortid="+sortId;
            
             DataTable dataTable = SQLiteHelper.GetDataTable(text);
             return dataTable;
@@ -71,12 +78,14 @@ namespace TaoBaoGuanJia.Helper
         {
       
             string strSql = "select p.*,s.sysSortId,c.content,c.wirelessdesc from sp_item p left join sp_sysSort s on s.itemId=p.id left join sp_itemContent c on p.id=c.itemId where id in ("+ ids + ") and p.del=0 and p.sysId=1 order by p.showurl asc";
-            return conn.Query<ProductItem>(strSql.ToString(),null)?.ToList(); ;
+            return userConn.Query<ProductItem>(strSql.ToString(),null)?.ToList(); ;
         }
 
         public static Sys_sysProperty GetPropertyById(int id)
         {
-            return GetPropertyList().Find(a => a.Id == id);
+            string sql = "SELECT * from sys_sysProperty where id=@id";
+            return conn.Query<Sys_sysProperty>(sql, new Sys_sysProperty() { Id = id })?.FirstOrDefault();
+         
         
         }
 
@@ -102,10 +111,8 @@ namespace TaoBaoGuanJia.Helper
 
         internal static string GetSysConfig(string v1, string v2, string v3, string v4)
         {
-            string text =string.Format( "select * from sys_sysConfig where sectionGroup='{0}' and sectionName='{1}' and configKey='{2}'", v1, v2,  v3);
-
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            Sys_sysConfig c = DbUtil.DataTableToEntityList<Sys_sysConfig>(dataTable)?.FirstOrDefault();
+            string sql = string.Format( "select * from sys_sysConfig where sectionGroup='{0}' and sectionName='{1}' and configKey='{2}'", v1, v2,  v3);
+            Sys_sysConfig c = conn.Query<Sys_sysConfig>(sql,null)?.FirstOrDefault();
             return (c==null? v4 : c.Configvalue);
         }
         public static DataTable GetSysConfigList(int sortId)
@@ -118,12 +125,14 @@ namespace TaoBaoGuanJia.Helper
 
         internal static Sys_sysSort GetSortBySysIdAndKeys(int sysid, string cid)
         {
-            return GetSysSortList().Find(a => a.Keys == cid);
+            string sql = "SELECT * from sys_sysSort where  sysId=1 and del=0 and Keys=@Keys";
+            return conn.Query<Sys_sysSort>(sql, new Sys_sysSort() { Keys = cid })?.FirstOrDefault();
+     
         }
 
         public static DataTable GetSizeDetailTableByTypeCode(string typeCode, int sysId)
         {
-            string sql = "select * from tb_sizeDetail with(nolock) where sysId=" + sysId + " and GroupType='" + DbUtil.OerateSpecialChar(typeCode) + "' and del=0";
+            string sql = "select * from sys_sizeDetail with(nolock) where sysId=" + sysId + " and GroupType='" + DbUtil.OerateSpecialChar(typeCode) + "' and del=0";
             return SQLiteHelper.GetDataTable(sql);
         }
         public static Sys_sizeDetail GetSizeDetailBySizeValue(string sizeValue, string typeCode, int sysId)
@@ -152,52 +161,48 @@ namespace TaoBaoGuanJia.Helper
         }
         public static List<Sys_sizeGroup> GetSizeGroupList()
         {
-            string text = "select * from tb_sizeGroup where SysId=1 and del=0";
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_sizeGroup>(dataTable)?.ToList();
+            string sql = "select * from sys_sizeGroup where SysId=1 and del=0";
+            return conn.Query<Sys_sizeGroup>(sql,null)?.ToList();
 
         }
         internal static Sys_shopShip GetShopShipById(int v)
         {
             return null;
             string text = "select * from Sys_shopShip where id=" + v;
-
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_shopShip>(dataTable)?.FirstOrDefault();
+            return conn.Query<Sys_shopShip>(text, null)?.FirstOrDefault();
         }
 
         internal static IList<Sp_sellProperty> GetSellProperty(int itemid)
         {
             string text = "select * from Sp_sellProperty where itemid=" + itemid;
 
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sp_sellProperty>(dataTable);
+     
+            return userConn.Query<Sp_sellProperty>(text, null)?.ToList();
         }
         public static List<Sys_sysPropertyValue> GetSysPropertyValueList()
         {
-            string text = "select * from tb_sysPropertyValue";
+            string text = "select * from sys_sysPropertyValue";
             DataTable dataTable = SQLiteHelper.GetDataTable(text);
             return DbUtil.DataTableToEntityList<Sys_sysPropertyValue>(dataTable)?.ToList();
 
         }
         internal static Sys_sysPropertyValue GetPropertyValueById(int v)
         {
- 
-            return GetSysPropertyValueList().Find(a=>a.Id==v);
+            string sql = "select * from sys_sysPropertyValue where id=@id";
+            return conn.Query<Sys_sysPropertyValue>(sql,new Sys_sysPropertyValue() { Id=v })?.FirstOrDefault();
         }
 
         internal static IList<Sys_sysPropertyValue> GetPropertyValuesByPropertyId(int v)
         {
-            return GetSysPropertyValueList().FindAll(a => a.Propertyid == v);
-          
+            string sql = "select * from sys_sysPropertyValue where propertyid=@propertyid";
+            return conn.Query<Sys_sysPropertyValue>(sql, new Sys_sysPropertyValue() { Propertyid = v })?.ToList();
         }
 
         internal static Sys_sysAddress GetAddressBySysIdAndCode(int sysId, string state)
         {
             string text = "select * from Sys_sysAddress where sysid="+sysId+" and addrCode='"+ state + "' and del=0";
 
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_sysAddress>(dataTable)?.FirstOrDefault();
+            return conn.Query<Sys_sysAddress>(text,null)?.FirstOrDefault();
             
         }
 
@@ -207,27 +212,27 @@ namespace TaoBaoGuanJia.Helper
             //todo
             string text = "select * from Sys_shopShip where shopId="+shopId;
 
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_shopShip>(dataTable);
+            return conn.Query<Sys_shopShip>(text,null)?.ToList();
         }
 
         internal static IList<Sys_shopSort> GetShopSortsByShopId(int shopId)
         {
             return null;
-            string text = "select * from Sys_shopSort where isDelete=0 and shopId="+shopId;
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_shopSort>(dataTable);
+            string sql = "select * from Sys_shopSort where isDelete=0 and shopId="+shopId;
+            return conn.Query<Sys_shopSort>(sql,null)?.ToList();
         }
 
         internal static string GetSortKeyBySortId(int sysSortId)
         {
-            string sql = "SELECT * from tb_sysSort where  id="+sysSortId;
+            string sql = "SELECT * from sys_sysSort where  id="+sysSortId;
             return conn.Query<Sys_sysSort>(sql, null)?.FirstOrDefault()?.Keys;
         }
 
         internal static Sys_sysSort GetSortById(int id)
         {
-            return GetSysSortList().Find(a => a.Id == id);
+            string sql = "SELECT * from sys_sysSort where id=@id";
+            return conn.Query<Sys_sysSort>(sql, new Sys_sysSort() { Id=id })?.FirstOrDefault();
+  
         }
 
         internal static void InsertSpPictures(int num, IList<Sp_pictures> spPicturesList)
@@ -248,7 +253,7 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@ItemId,@localPath,@url,@keys,@picIndex,@isModify,@shopId");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), spPicturesList);
+            userConn.Execute(strSql.ToString(), spPicturesList);
         }
 
         internal static void InsertSpSellPropertyList(int num, IList<Sp_sellProperty> spSellPropertyList)
@@ -271,7 +276,7 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@modifyTime,@name,@newOrOld,@salePrice,@salePriceBeginDate,@salePriceEndDate,@standardProductId,@state,@productIdType,@saleAttr,@itemId,@skuId,@barcode,@shopId,@sysId,@sellProInfos,@price,@nums,@code,@remark");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), item);
+            userConn.Execute(strSql.ToString(), item);
         }
 
         internal static void InsertSpPropertyList(int num, IList<Sp_property> spPropertyList)
@@ -294,7 +299,7 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@isSellPro,@Aliasname,@picUrl,@url,@itemId,@shopId,@sysId,@propertyId,@name,@value,@modifyTime,@propertyKeys");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), spPropertyList);
+            userConn.Execute(strSql.ToString(), spPropertyList);
         }
         internal static void InsertSpItemContent(Sp_itemContent spItemContent)
         {
@@ -305,7 +310,7 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@itemId,@content,@uploadFailMsg,@faultreason,@modifyDate,@wirelessdesc");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), spItemContent);
+            userConn.Execute(strSql.ToString(), spItemContent);
         }
 
         internal static void InsertFoodSecurity(Sp_foodSecurity spFodSecurity)
@@ -317,25 +322,25 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@period,@foodAdditive,@supplier,@productDateStart,@productDateEnd,@stockDateStart,@stockDateEnd,@healthProductNo,@itemId,@prdLicenseNo,@designCode,@factory,@factorySite,@contact,@mix,@planStorage");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), spFodSecurity);
+            userConn.Execute(strSql.ToString(), spFodSecurity);
         }
 
         internal static IList<Sp_pictures> GetPhotos(string itemId)
         {
             string sql = "SELECT * from Sp_pictures where itemId=" + itemId;
-            return conn.Query<Sp_pictures>(sql, null)?.ToList();
+            return userConn.Query<Sp_pictures>(sql, null)?.ToList();
         }
 
         internal static Sp_foodSecurity GetFoodSecurityByItemId(string itemId)
         {
             string sql = "SELECT * from Sp_foodSecurity where itemId=" + itemId;
-            return conn.Query<Sp_foodSecurity>(sql, null)?.FirstOrDefault();
+            return userConn.Query<Sp_foodSecurity>(sql, null)?.FirstOrDefault();
         }
 
         internal static Sp_sysSort GetSpSysSort(int itemId)
         {
             string sql = "SELECT * from Sp_sysSort where itemId="+ itemId;
-            return conn.Query<Sp_sysSort>(sql, null)?.FirstOrDefault();
+            return userConn.Query<Sp_sysSort>(sql, null)?.FirstOrDefault();
         }
 
         internal static IList<Sys_sysEnumItem> GetEnumItemByCode(Sys_sysEnumItem model)
@@ -353,14 +358,13 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append(") values (");
             strSql.Append("@itemId,@shopId,@sysId,@sysSortId,@sysSortName,@sysSortPath,@modifyTime");
             strSql.Append(") ;");
-            conn.Execute(strSql.ToString(), spSysSort);
+            userConn.Execute(strSql.ToString(), spSysSort);
         }
 
         internal static IList<Sys_sysProperty> GetSellPropertyBySortId(int sortId)
         {
-            string text = "select * from tb_sysProperty where sortid=" + sortId;
-            DataTable dataTable = SQLiteHelper.GetDataTable(text);
-            return DbUtil.DataTableToEntityList<Sys_sysProperty>(dataTable);
+            string text = "select * from sys_sysProperty where sortid=" + sortId;
+            return conn.Query<Sys_sysProperty>(text,null)?.ToList();
         }
 
         internal static int InsertSpItem(Sp_item spItem)
@@ -373,24 +377,24 @@ namespace TaoBaoGuanJia.Helper
             strSql.Append("@photo,@sellType,@sellTypeName,@price,@priceRise,@nums,@limitNums,@validDate,@shipWay,@useShipTpl,@name,@shipTplId,@shipWayName,@shipSlow,@shipFast,@shipEMS,@onSell,@onSellDate,@onSellHour,@onSellMin,@payType,@sysId,@isRmd,@isReturn,@isTicket,@ticketName,@isRepair,@repairName,@isAutoPub,@isVirtual,@sszgUserName,@kcItemId,@shopId,@code,@kcItemName,@state,@onlineKey,@listTime,@delistTime,@photoModified,@detailUrl,@showUrl,@shopSortIds,@newOrOld,@shopSortNames,@operateTypes,@crtDate,@modifyDate,@synchState,@synchDetail,@del,@discount,@integrity,@weight,@province,@subStock,@size,@afterSaleId,@isPaipaiNewStock,@barcode,@sellPoint,@provinceName,@city,@cityName");
             strSql.Append(") ;select last_insert_rowid() newid;");
 
-            return conn.Query<int>(strSql.ToString(), spItem).FirstOrDefault();
+            return userConn.Query<int>(strSql.ToString(), spItem).FirstOrDefault();
         }
 
         internal static IList<Sp_property> GetPropertyListByItemId(int itemId)
         {
             string sql = "SELECT * from Sp_property where itemId=" + itemId;
-            return conn.Query<Sp_property>(sql, null)?.ToList();
+            return userConn.Query<Sp_property>(sql, null)?.ToList();
         }
 
         internal static IList<Sp_sellProperty> GetSellProperty(int itemId, int sysId)
         {
             string sql = "SELECT * from Sp_sellProperty where itemId=" + itemId;
-            return conn.Query<Sp_sellProperty>(sql, null)?.ToList();
+            return userConn.Query<Sp_sellProperty>(sql, null)?.ToList();
         }
         internal static IList<Sp_item> GetProductItemList()
         {
             string sql = "SELECT * from Sp_item";
-            return conn.Query<Sp_item>(sql, null)?.ToList();
+            return userConn.Query<Sp_item>(sql, null)?.ToList();
         }
 
         public static void AddUserConfig(tb_userconfig model)
@@ -400,10 +404,10 @@ namespace TaoBaoGuanJia.Helper
         }
         public static void UpdateUserConfigByKey(tb_userconfig model)
         {
-            string strSql = "update tb_userconfig set configvalue=@configvalue where configkey=@configkey";
+            string strSql = "update sys_userconfig set configvalue=@configvalue where configkey=@configkey";
             conn.Execute(strSql, model);
         }
-        public static tb_userconfig  GetUserConfigByKey(string key)
+        public static tb_userconfig GetUserConfigByKey(string key)
         {
             string strSql = "select * from  tb_userconfig  where configkey=@configkey";
             return conn.Query<tb_userconfig>(strSql, new tb_userconfig() {  configkey=key})?.FirstOrDefault();

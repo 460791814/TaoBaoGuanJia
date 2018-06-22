@@ -20,10 +20,10 @@ namespace TaoBaoGuanJia.Helper
                // return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VideoInfo.db");
             }
         }
-        public static SQLiteConnection SimpleDbConnection()
+        public static SQLiteConnection SimpleDbConnection(string path,string pw="")
         {
 
-            string connString = string.Format("Data Source={0};Password=;", DbFile);
+            string connString = string.Format("Data Source={0};Password=;", path);
             return new SQLiteConnection(connString);
         }
     }

@@ -18,7 +18,7 @@ namespace TaoBaoGuanJia.Helper
             {
                 Directory.CreateDirectory(path);
             }
-            string databaseFileName = path + "tbgj.db";
+            string databaseFileName = path + "data.db";
             if (!File.Exists(databaseFileName))
             {
                 SQLiteConnection.CreateFile(databaseFileName);
