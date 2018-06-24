@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>32x32.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.40\lib\net35\Dapper.dll</HintPath>
@@ -140,6 +143,7 @@
     <Compile Include="Model\EntityCustom.cs" />
     <Compile Include="Model\EvaluatesItem.cs" />
     <Compile Include="Model\Extras.cs" />
+    <Compile Include="Model\E_Range.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\FreightInfo.cs" />
     <Compile Include="Model\FxItemDetail.cs" />
@@ -168,8 +172,6 @@
     <Compile Include="Model\Taobao\Sys_sysConfig.cs" />
     <Compile Include="Model\Taobao\Sys_sysEnumItem.cs" />
     <Compile Include="Model\Taobao\tb_userconfig.cs" />
-    <Compile Include="Service\TaoBaoThread.cs" />
-    <Compile Include="UserSetting.cs" />
     <Compile Include="UserSetting.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -335,6 +337,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="32x32.ico" />
     <Content Include="Dll\HtmlAgilityPack.dll" />
     <Content Include="Dll\TopSdk.dll" />
   </ItemGroup>

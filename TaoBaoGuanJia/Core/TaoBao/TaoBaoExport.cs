@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -126,7 +127,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
             array[33] = this.ConvertToSaveCellCommon(productItem.Code);
             array[34] = this.ConvertToSaveCellCommon(productItem.CustomProperty);
             array[35] = "0";
-            array[36] = productItem.OnlineKey;
+            array[36] = UserSetting.Default.IsSaveIdToOutId ? productItem.OnlineKey : "";
             array[37] = "0";
             array[38] = "";
             array[39] = DataConvert.ToString(productItem.SszgUserName);
@@ -213,7 +214,25 @@ namespace TaoBaoGuanJia.Core.TaoBao
                 productItem.Wirelessdesc = string.Empty;
             }
             //下载PC内容图片
-            DownloadItemContentPic(productItem, photoPath);
+            if (UserSetting.Default.IsDownPic)
+            {
+                DownloadItemContentPic(productItem, photoPath);
+            }
+            if (UserSetting.Default.IsClearAutoDeliveryDesc)
+            {
+                productItem.Content = ClearAutoDeliveryDesc(productItem.Content);
+            }
+            if (UserSetting.Default.IsClearAssociated)
+            {
+                productItem.Content = ClearContentUrl(productItem.Content);
+            }
+            if (!string.IsNullOrEmpty(UserSetting.Default.ContentHeader)) {
+                productItem.Content = UserSetting.Default.ContentHeader+productItem.Content;
+            }
+            if (!string.IsNullOrEmpty(UserSetting.Default.Province)) {
+                productItem.Province = UserSetting.Default.Province;
+                productItem.City= UserSetting.Default.City;
+            }
             if (!string.IsNullOrEmpty(productItem.OperateTypes))
             {
                 string stringToEscape = "{\"bathrobe_field_tag_image_1\" : \"\", \"bathrobe_field_tag_image_2\" : \"\",\"var_item_board_inspection_report\" : \"\",\"var_item_glove_inspection_report_1\" : \"\",\"var_item_light_inspection_report_2\" : \"\",\"var_org_auth_tri_c_code\" : \"" + productItem.OperateTypes + "\",\"var_tri_c_cer_image\" : \"\", \"var_tri_c_cer_image_2\" : \"\" }";
@@ -221,6 +240,53 @@ namespace TaoBaoGuanJia.Core.TaoBao
             }
             return this.TaobaoPrepareCSVData(productItem);
         }
+        /// <summary>
+        /// 清理自动发货等无用描述
+        /// </summary>
+        /// <param name="productItem"></param>
+        private string ClearAutoDeliveryDesc(string content)
+        {
+            try
+            {
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(content);
+                doc.DocumentNode.SelectSingleNode("//div[@data-title='agiso_alds_desc']").RemoveAll();
+                string result = doc.DocumentNode.InnerHtml;
+                if (!string.IsNullOrEmpty(result))
+                {
+                    content = result;
+                }
+                return content;
+            }
+            catch (Exception e)
+            {
+                Log.WriteLog(e);
+                return content;
+            }
+        }
+        /// <summary>
+        /// 清理关联商品链接
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private string ClearContentUrl(string content)
+        {
+            string empty = string.Empty;
+            content = content.Replace("\u00a0", "&nbsp;");
+            string pattern = "<a\\b[^>]*?href=\"([^\"]*?)\"[^>]*?>";
+            string replacement = "<a>";
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            empty = regex.Replace(content, replacement);
+            pattern = "<area\\b[^>]*?href=\"([^\"]*?)\"[^>]*?>";
+            replacement = "<area>";
+            regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            empty = regex.Replace(empty, replacement);
+            pattern = "<link\\b[^>]*?href=\"([^\"]*?)\"[^>]*?>";
+            replacement = "<link>";
+            regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            return regex.Replace(empty, replacement);
+        }
+
         private void DownloadItemContentPic(ProductItem productItem, string photoPath)
         {
 
@@ -369,7 +435,7 @@ namespace TaoBaoGuanJia.Core.TaoBao
         private string HandleMobileDesc(string wirelessdesc, string mobilePhotoPath)
         {
 
-  
+
             bool isExportMibleDesc2500k = false;
             string a = string.Empty;
             a = "ExpMobDesc1500K";// ToolServer.ConfigData.GetUserConfig("AppConfig", "ExpMobDescMode", this._exportPackageDao.ToolCode, "");

@@ -166,7 +166,7 @@ namespace TaoBaoGuanJia.Helper
         /// </summary>
         /// <returns></returns>
         public static string GetCsvPath() {
-            return System.Environment.CurrentDirectory+"/csv/";
+            return  UserSetting.Default.FileSavePath;
         }
         /// <summary>
         /// 同一个图片是否重复下载
@@ -174,5 +174,9 @@ namespace TaoBaoGuanJia.Helper
         public static bool SamePicDownloadOneTime = false;
 
         public static string ExportDescSize = "2M";
+        /// <summary>
+        /// 淘宝详情正则表达式
+        /// </summary>
+        public static string taobaoInfoUrl = @"((http:)?//mdetail\.tmall\.com/venus/spu_detail|(http:)?//chaoshi\.detail\.tmall\.com/item|(http:)?//item\.(\w*\.)?taobao\.com/item|(http:)?//spu\.tmall\.com/spu_detail|(http:)?//item\.(\w*\.)?taobao\.com/auction/item_detail|(http:)?//item\.tmall\.com/item|(http:)?//detail\.tmall\.com/venus/spu_detail|(http:)?//detail\.tmall\.com/item|(http:)?//(\w*\.)?tmall\.com/detail/view_detail|(http:)?//(\w*\.)*taobao\.com/item|(http:)?//detail\.tmall\.hk(/hk)?/item)\.htm.*[?&](item_num_id|ItemId|item_id|default_item_id|id|mallstItemId)=(?<itemCode>\d*)|(http:)?//miao\.item\.taobao\.com/(?<itemCode>\d+)\.htm|(http:)?//h5\.m\.taobao\.com/awp/core/detail\.htm.*?[?&]id=(?<itemCode>\d+)|(http:)?//detail\.([^/\.]+?\.)+?com/item\.htm.*?[?&]id=(?<itemCode>\d+)|(http:)?//(taiwan|tw|world)\.(tmall|taobao)\.com/item/(?<itemCode>\d+)\.htm|(https:)?//detail.tmall.hk/item.htm?[^&id]*?&id=(?<itemCode>.*?)&|(http:)?//detail\.tmall\.com/(item|enterprise)\.htm.*?[?&]id=(?<itemCode>\d+)|(https:)?//detail.tmall.com//item.htm?.*?&id=(?<itemCode>\d+)";
     }
 }

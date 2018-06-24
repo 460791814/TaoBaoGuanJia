@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using TaoBaoGuanJia.Extension;
 using TaoBaoGuanJia.Helper;
 using TaoBaoGuanJia.Model;
 
@@ -452,6 +453,7 @@ namespace TaoBaoGuanJia.Util
 					string value = matchPicPath[i].Groups[0].Value;
 					try
 					{
+                       
 						DownloadPicture(ref content, value, filePath, empty + "-" + (i + 1), true, IsTaobao5, ref moveUrlDic, ref uccorError);
 					}
 					catch (Exception ex)
@@ -784,7 +786,8 @@ namespace TaoBaoGuanJia.Util
 						}
 						string empty2 = string.Empty;
 						int maxDescPicSize = GetMaxDescPicSize();
-						flag = DownLoadPicture(HttpUtility.HtmlDecode(key), photoPath, fileName, maxDescPicSize, out text, ref uccorError, out empty2);
+                        ControlsUtils.OperationLog("下载图片:" + key);
+                        flag = DownLoadPicture(HttpUtility.HtmlDecode(key), photoPath, fileName, maxDescPicSize, out text, ref uccorError, out empty2);
 						if (!flag && uccorError)
 						{
 							return false;

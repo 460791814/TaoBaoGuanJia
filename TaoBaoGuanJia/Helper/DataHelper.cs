@@ -205,7 +205,14 @@ namespace TaoBaoGuanJia.Helper
             return conn.Query<Sys_sysAddress>(text,null)?.FirstOrDefault();
             
         }
-
+        /// <summary>
+        /// 获取淘宝所有省市
+        /// </summary>
+        /// <returns></returns>
+        public static List<Sys_sysAddress> GetAddressList() {
+            string text = "select * from Sys_sysAddress where sysid=1 and del=0";
+            return conn.Query<Sys_sysAddress>(text, null)?.ToList();
+        }
         internal static IList<Sys_shopShip> GetShopShipsByShopId(int shopId)
         {
             return null;

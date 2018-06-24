@@ -11,6 +11,7 @@ using System.Net;
 using System.Data.SqlClient;
 using System.Collections;
 using System.Configuration;
+using TaoBaoGuanJia.Model;
 
 namespace TaoBaoGuanJia.Util
 {
@@ -2201,5 +2202,90 @@ namespace TaoBaoGuanJia.Util
             }
             return builder.ToString();
         }
+        //切割
+        public static List<E_Range> PrepareData(int minId, int maxId, int numRange)
+        {
+
+            //计算range---=>n个range
+            List<E_Range> list = new List<E_Range>();
+            int minValue = 0;//最小值
+            int maxValue = 0;//最大值
+            if (minId > 0)
+            {
+                minValue = minId;
+            }
+            if (maxId > 0)
+            {
+                maxValue = maxId;
+            }
+
+
+
+            if (numRange > 0 && (minValue <= maxValue))//符合条件，计算批次
+            {
+                int batchCount = maxValue / numRange + 1;//批次量
+                int batchStart = minValue / numRange;//批次开始
+                for (int i = batchStart; i < batchCount; i++)//遍历批次，计算小区间值
+                {
+                    //小区间末尾值
+                    int end = (i + 1) * numRange;
+                    if (end > maxValue)//小区间末尾大于最大值
+                    {
+                        end = maxValue;
+                    }
+                    //小区间开始值
+                    int begin = i * numRange + 1;
+                    if (end >= minValue && begin <= maxValue)//正常的区间
+                    {
+                        if (begin <= minValue)//如果开始区间小于最小值，则开始值为最小值
+                        {
+                            begin = minValue;
+                        }
+                        //批次信息类
+                        E_Range eRange = new E_Range();
+                        eRange.batchNum = i;
+                        eRange.begin = begin;
+                        eRange.end = end;//
+                        list.Add(eRange);
+                    }
+                }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 根据URL获取ID
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string GetId(string url)
+        {
+
+            string reg = @"id=(\d{10,})";
+            Match match = Regex.Match(url, reg);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+            return null;
+        }
+        public static List<string> GetMatchList(string content, string pattern)
+        {
+            List<string> list = new List<string>();
+
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            MatchCollection matchCollection = regex.Matches(content);
+            if (matchCollection != null && matchCollection.Count > 0)
+            {
+                foreach (Match item in matchCollection)
+                {
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        list.Add(item.Value);
+                    }
+                }
+            }
+            return list;
+        }
     }
+
 }

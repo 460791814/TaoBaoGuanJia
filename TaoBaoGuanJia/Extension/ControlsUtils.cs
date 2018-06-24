@@ -10,14 +10,15 @@ namespace TaoBaoGuanJia.Extension
     //控件代理
     public static class ControlsUtils
     {
-        public static MainForm mainForm;
-        public static DataGridView dataGridViewMaster;
-        public static TextBox txtLog;
-        public static DialogResult DialogResult;
+        public static MainForm mainForm;//主窗体对象
+        public static DataGridView dataGridViewMaster;//列表
+        public static TextBox operationLog;//操作日记
+        public static ToolStripProgressBar toolStripProgressBar_main;//进度条
         //空参委托
         private delegate void EmptyDelegate();
         //string单参数委托
         private delegate void StringDelegate(string str);
+        private delegate void ProgressBarDelegate(int max, int value);
         /// <summary>
         /// 刷新产品列表
         /// </summary>
@@ -55,18 +56,37 @@ namespace TaoBaoGuanJia.Extension
         /// 输出操作日记
         /// </summary>
         /// <param name="msg"></param>
-        public static void AppendTextLog(string msg)
+        public static void OperationLog(string msg)
         {
             if (mainForm.InvokeRequired)
             {
-                StringDelegate d = new StringDelegate(Msg);
+                StringDelegate d = new StringDelegate(OperationLog);
                 mainForm.Invoke(d,msg);
             }
             else
             {
-                txtLog.AppendText(msg);
-                txtLog.AppendText(Environment.NewLine);
-                txtLog.ScrollToCaret();
+                operationLog.AppendText(msg);
+                operationLog.AppendText(Environment.NewLine);
+                operationLog.ScrollToCaret();
+               
+            }
+        }
+        /// <summary>
+        /// 进度条
+        /// </summary>
+        /// <param name="msg"></param>
+        public static void SetProgressBarValue(int max,int value)
+        {
+            if (mainForm.InvokeRequired)
+            {
+                ProgressBarDelegate d = new ProgressBarDelegate(SetProgressBarValue);
+                mainForm.Invoke(d, max, value);
+            }
+            else
+            {
+                toolStripProgressBar_main.Maximum = max;
+                toolStripProgressBar_main.Value = value;
+
             }
         }
     }

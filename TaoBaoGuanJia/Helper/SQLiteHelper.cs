@@ -29,7 +29,7 @@ namespace TaoBaoGuanJia.Helper
         private static string CreateConnectionString()
         {
             SQLiteConnectionStringBuilder connectionString = new SQLiteConnectionStringBuilder();
-            connectionString.DataSource = @"data/tbgj.db";
+            connectionString.DataSource = @"data/data.db";
 
             string conStr = connectionString.ToString();
             return conStr;

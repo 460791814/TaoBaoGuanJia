@@ -122,7 +122,8 @@ namespace TaoBaoGuanJia.Core.TaoBao
                     List<Sku>.Enumerator enumerator6;
                     if (!snatchPromotionPrice)
                     {
-                        List<Sku> mobilePromoPriceSkuList = GetMobilePromoPriceSkuList(response, isTaobao, itemJsonEntity, ref text2, ref num, true, itemJsonEntity.data);
+                        string emptyPrice = string.Empty;
+                        List<Sku> mobilePromoPriceSkuList = GetMobilePromoPriceSkuList(response, isTaobao, itemJsonEntity, ref emptyPrice, ref num, true, itemJsonEntity.data);
                         if (mobilePromoPriceSkuList != null && mobilePromoPriceSkuList.Count > 0)
                         {
                             enumerator6 = itemTaobaoEntity.SkuList.GetEnumerator();

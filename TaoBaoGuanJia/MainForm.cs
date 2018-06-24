@@ -23,7 +23,7 @@ namespace TaoBaoGuanJia
         {
             InitializeComponent();
 
-            Init();
+            InitData();
             InitUserConfig();
         }
         /// <summary>
@@ -32,12 +32,53 @@ namespace TaoBaoGuanJia
         private void InitUserConfig()
         {
             chk_MobileDesc.Checked = UserSetting.Default.IsExportMobileDesc;
-         
-        }
+           // chk_SalePrice.Checked = UserSetting.Default.IsUseSalePrice;
+            chk_IsClearAssociated.Checked = UserSetting.Default.IsClearAssociated;
+            chk_IsSaveIdToOutId.Checked = UserSetting.Default.IsSaveIdToOutId;
+            chk_IsDownPic.Checked = UserSetting.Default.IsDownPic;
+            chk_IsClearAutoDeliveryDesc.Checked = UserSetting.Default.IsClearAutoDeliveryDesc;
+            textBox_ContentHeader.Text = UserSetting.Default.ContentHeader;
+            if (string.IsNullOrEmpty(UserSetting.Default.FileSavePath)) {
+                UserSetting.Default.FileSavePath=System.Environment.CurrentDirectory + "/csv/";
+                UserSetting.Default.Save();
+            }
+            textBox_FileSavePath.Text = UserSetting.Default.FileSavePath;
 
-        private void Init()
+        }
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitData()
         {
             InitDataGridViewMaster();
+            InitProvinceCity();
+        }
+
+        private void InitProvinceCity()
+        {
+            comboBox_province.SelectedIndexChanged -= new EventHandler(comboBox_province_SelectedIndexChanged);
+            comboBox_City.SelectedIndexChanged -= new EventHandler(comboBox_City_SelectedIndexChanged);
+            List<string> list = DataHelper.GetAddressList().FindAll(a => a.Parentid == 0).Select(a => a.Addrcode).ToList();
+            list.Insert(0, "默认");
+            comboBox_province.DataSource = list;
+            if (!string.IsNullOrEmpty(UserSetting.Default.Province))
+            {
+                comboBox_province.SelectedIndex = comboBox_province.Items.IndexOf(UserSetting.Default.Province);
+
+            }
+            string name = comboBox_province.SelectedValue.ToString();
+            List<string> CityList = DataHelper.GetAddressList().FindAll(a => a.Parent == name).Select(a => a.Addrcode).ToList();
+            if (CityList != null && CityList.Count > 0)
+            {
+                comboBox_City.DataSource = CityList;
+                if (!string.IsNullOrEmpty(UserSetting.Default.City))
+                {
+                    comboBox_City.SelectedIndex = comboBox_City.Items.IndexOf(UserSetting.Default.City);
+                }
+            }
+
+            comboBox_province.SelectedIndexChanged += new EventHandler(comboBox_province_SelectedIndexChanged);
+            comboBox_City.SelectedIndexChanged += new EventHandler(comboBox_City_SelectedIndexChanged);
         }
 
         private void btn_caiji_Click(object sender, EventArgs e)
@@ -47,9 +88,8 @@ namespace TaoBaoGuanJia
             {
                 MessageBoxEx.Show(this, "请输入淘宝(宝贝/店铺/列表)地址");
             }
-            TaoBaoThread taoBaoThread = new TaoBaoThread();
-            taoBaoThread.mainForm = this;
-            taoBaoThread.Handler(url);
+            TaoBaoService taobaoService = new TaoBaoService();
+            taobaoService.ImportProduct(url);
 
 
         }
@@ -70,7 +110,7 @@ namespace TaoBaoGuanJia
         }
         private void ch_OnCheckBoxClicked(object sender, datagridviewCheckboxHeaderEventArgs e)
         {
-           
+
             dataGridViewMaster.EndEdit();
             foreach (DataGridViewRow dgvRow in this.dataGridViewMaster.Rows)
             {
@@ -111,8 +151,11 @@ namespace TaoBaoGuanJia
             }
             else
             {
-                TaoBaoService taobaoService = new TaoBaoService();
-                taobaoService.ExportToCsv(list);
+                new Task(()=> {
+                    TaoBaoService taobaoService = new TaoBaoService();
+                    taobaoService.ExportToCsv(list);
+                }).Start();
+                
             }
         }
 
@@ -122,6 +165,7 @@ namespace TaoBaoGuanJia
             for (int i = 0; i < this.dataGridViewMaster.Rows.Count; i++)
             {
                 DataGridViewRow r = this.dataGridViewMaster.Rows[i];
+                
                 r.HeaderCell.Value = string.Format("{0}", i + 1);
             }
             this.dataGridViewMaster.Refresh();
@@ -139,7 +183,8 @@ namespace TaoBaoGuanJia
 
             ControlsUtils.mainForm = this;
             ControlsUtils.dataGridViewMaster = this.dataGridViewMaster;
-
+            ControlsUtils.operationLog = txt_OperationLog;
+            ControlsUtils.toolStripProgressBar_main = toolStripProgressBar_main;
         }
         #region 多线程操作控件
         private delegate void RefreshDataGridViewMasterDelegate();
@@ -158,7 +203,6 @@ namespace TaoBaoGuanJia
 
             //将此复选框列添加到DataGridView中  
             this.dataGridViewMaster.Columns.Insert(0, checkboxCol);
-
             ch.OnCheckBoxClicked += new datagridviewcheckboxHeaderEventHander(ch_OnCheckBoxClicked);//关联单击事件  
 
         }
@@ -220,8 +264,109 @@ namespace TaoBaoGuanJia
         {
             UserSetting.Default.IsExportMobileDesc = chk_MobileDesc.Checked;
             UserSetting.Default.Save();
-        
 
+
+        }
+        /// <summary>
+        /// 勾选促销价
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chk_SalePrice_CheckedChanged(object sender, EventArgs e)
+        {
+          //  UserSetting.Default.IsUseSalePrice = chk_SalePrice.Checked;
+          //  UserSetting.Default.Save();
+        }
+
+        private void chk_IsClearAssociated_CheckedChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.IsClearAssociated = chk_IsClearAssociated.Checked;
+            UserSetting.Default.Save();
+        }
+
+        private void chk_IsSaveIdToOutId_CheckedChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.IsSaveIdToOutId = chk_IsSaveIdToOutId.Checked;
+            UserSetting.Default.Save();
+        }
+
+        private void chk_IsDownPic_CheckedChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.IsDownPic = chk_IsDownPic.Checked;
+            UserSetting.Default.Save();
+        }
+
+        private void chk_IsClearAutoDeliveryDesc_CheckedChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.IsClearAutoDeliveryDesc = chk_IsClearAutoDeliveryDesc.Checked;
+            UserSetting.Default.Save();
+        }
+
+        private void comboBox_province_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string name = comboBox_province.SelectedValue.ToString();
+            List<string> list = DataHelper.GetAddressList().FindAll(a => a.Parent == name).Select(a => a.Addrcode).ToList();
+            if (list != null && list.Count > 0)
+            {
+                comboBox_City.DataSource = list;
+                UserSetting.Default.Province = name;
+                UserSetting.Default.City = list[0];
+                UserSetting.Default.Save();
+            }
+            else
+            {
+                comboBox_City.DataSource = null;
+            }
+        }
+
+        private void comboBox_City_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.City = comboBox_City.SelectedValue.ToString();
+            UserSetting.Default.Save();
+        }
+
+        private void textBox_ContentHeader_TextChanged(object sender, EventArgs e)
+        {
+            UserSetting.Default.ContentHeader = textBox_ContentHeader.Text.Trim();
+            UserSetting.Default.Save();
+        }
+
+        private void btn_SaveCsvPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件夹路径";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string foldPath = dialog.SelectedPath;
+                textBox_FileSavePath.Text = foldPath;
+                UserSetting.Default.FileSavePath = foldPath;
+                UserSetting.Default.Save();
+            }
+        }
+
+        private void dataGridViewMaster_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2) {
+                string id = this.dataGridViewMaster.Rows[e.RowIndex].Cells[5].Value.ToString();
+                System.Diagnostics.Process.Start("https://item.taobao.com/item.htm?id="+id);
+            }
+        }
+        private string Notes = "请输入淘宝宝贝详情地址";
+        private void txt_url_Enter(object sender, EventArgs e)
+        {
+            //  进入时，清空
+            if (txt_url.Text == Notes) { 
+                this.txt_url.Text = "";
+                txt_url.ForeColor = Color.Black;
+            }
+        }
+
+        private void txt_url_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txt_url.Text)) { 
+                this.txt_url.Text = Notes;
+                txt_url.ForeColor = Color.LightGray;
+            }
         }
     }
 }

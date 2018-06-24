@@ -12,7 +12,7 @@ namespace TaoBaoGuanJia {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
     internal sealed partial class UserSetting : global::System.Configuration.ApplicationSettingsBase {
         
         private static UserSetting defaultInstance = ((UserSetting)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new UserSetting())));
@@ -32,6 +32,114 @@ namespace TaoBaoGuanJia {
             }
             set {
                 this["IsExportMobileDesc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsUseSalePrice {
+            get {
+                return ((bool)(this["IsUseSalePrice"]));
+            }
+            set {
+                this["IsUseSalePrice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsClearAssociated {
+            get {
+                return ((bool)(this["IsClearAssociated"]));
+            }
+            set {
+                this["IsClearAssociated"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsSaveIdToOutId {
+            get {
+                return ((bool)(this["IsSaveIdToOutId"]));
+            }
+            set {
+                this["IsSaveIdToOutId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsDownPic {
+            get {
+                return ((bool)(this["IsDownPic"]));
+            }
+            set {
+                this["IsDownPic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsClearAutoDeliveryDesc {
+            get {
+                return ((bool)(this["IsClearAutoDeliveryDesc"]));
+            }
+            set {
+                this["IsClearAutoDeliveryDesc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Province {
+            get {
+                return ((string)(this["Province"]));
+            }
+            set {
+                this["Province"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string City {
+            get {
+                return ((string)(this["City"]));
+            }
+            set {
+                this["City"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ContentHeader {
+            get {
+                return ((string)(this["ContentHeader"]));
+            }
+            set {
+                this["ContentHeader"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FileSavePath {
+            get {
+                return ((string)(this["FileSavePath"]));
+            }
+            set {
+                this["FileSavePath"] = value;
             }
         }
     }
