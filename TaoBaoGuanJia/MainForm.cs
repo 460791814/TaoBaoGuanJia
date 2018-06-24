@@ -204,7 +204,7 @@ namespace TaoBaoGuanJia
             //将此复选框列添加到DataGridView中  
             this.dataGridViewMaster.Columns.Insert(0, checkboxCol);
             ch.OnCheckBoxClicked += new datagridviewcheckboxHeaderEventHander(ch_OnCheckBoxClicked);//关联单击事件  
-
+ 
         }
 
         #endregion
@@ -346,9 +346,16 @@ namespace TaoBaoGuanJia
 
         private void dataGridViewMaster_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2) {
+            if (dataGridViewMaster.Columns[e.ColumnIndex].Name == "linkInfo")
+            {
                 string id = this.dataGridViewMaster.Rows[e.RowIndex].Cells[5].Value.ToString();
                 System.Diagnostics.Process.Start("https://item.taobao.com/item.htm?id="+id);
+            }
+            if (dataGridViewMaster.Columns[e.ColumnIndex].Name == "linkDelete") {
+                //删除
+                string id = this.dataGridViewMaster.Rows[e.RowIndex].Cells[1].Value.ToString();
+                DataHelper.DeleteItemByIds(id);
+                ControlsUtils.RefreshDataGridViewMaster();
             }
         }
         private string Notes = "请输入淘宝宝贝详情地址";

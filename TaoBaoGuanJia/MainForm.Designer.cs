@@ -58,11 +58,11 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.statusStrip_main = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar_main = new System.Windows.Forms.ToolStripProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewLinkColumn1 = new System.Windows.Forms.DataGridViewLinkColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,8 +75,8 @@
             this.Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shuliang = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.province = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.city = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.linkInfo = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.linkDelete = new System.Windows.Forms.DataGridViewLinkColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMaster)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -144,8 +144,8 @@
             this.Price,
             this.shuliang,
             this.code,
-            this.province,
-            this.city});
+            this.linkInfo,
+            this.linkDelete});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -391,6 +391,12 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(84, 20);
             this.toolStripStatusLabel1.Text = "当前时间：";
             // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(234, 20);
+            this.toolStripStatusLabel3.Text = "软件问题交流QQ群：372368352";
+            // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
@@ -410,12 +416,6 @@
             // toolTip
             // 
             this.toolTip.ToolTipTitle = "提示";
-            // 
-            // toolStripStatusLabel3
-            // 
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(234, 20);
-            this.toolStripStatusLabel3.Text = "软件问题交流QQ群：372368352";
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -521,19 +521,22 @@
             this.code.Name = "code";
             this.code.Width = 82;
             // 
-            // province
+            // linkInfo
             // 
-            this.province.DataPropertyName = "provincename";
-            this.province.HeaderText = "省份";
-            this.province.Name = "province";
-            this.province.Width = 66;
+            this.linkInfo.HeaderText = "详情";
+            this.linkInfo.Name = "linkInfo";
+            this.linkInfo.Text = "查看";
+            this.linkInfo.UseColumnTextForLinkValue = true;
+            this.linkInfo.Width = 43;
             // 
-            // city
+            // linkDelete
             // 
-            this.city.DataPropertyName = "city";
-            this.city.HeaderText = "城市";
-            this.city.Name = "city";
-            this.city.Width = 66;
+            this.linkDelete.HeaderText = "删除";
+            this.linkDelete.Name = "linkDelete";
+            this.linkDelete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.linkDelete.Text = "删除";
+            this.linkDelete.UseColumnTextForLinkValue = true;
+            this.linkDelete.Width = 43;
             // 
             // MainForm
             // 
@@ -596,13 +599,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btn_SaveCsvPath;
         private System.Windows.Forms.TextBox textBox_FileSavePath;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewLinkColumn productName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Price;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shuliang;
-        private System.Windows.Forms.DataGridViewTextBoxColumn code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn province;
-        private System.Windows.Forms.DataGridViewTextBoxColumn city;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewLinkColumn dataGridViewLinkColumn1;
@@ -611,6 +607,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewLinkColumn productName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Price;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shuliang;
+        private System.Windows.Forms.DataGridViewTextBoxColumn code;
+        private System.Windows.Forms.DataGridViewLinkColumn linkInfo;
+        private System.Windows.Forms.DataGridViewLinkColumn linkDelete;
     }
 }
 

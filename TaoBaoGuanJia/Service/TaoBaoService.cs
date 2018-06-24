@@ -138,7 +138,8 @@ namespace TaoBaoGuanJia.Service
             _outputList.Add(new string[] { "version 1.00" });
             _outputList.Add(ConfigHelper.TaoBaoHeaderFieldRow);
             _outputList.Add(ConfigHelper.TaoBaoHeaderRow);
-            List<ProductItem> list = DataHelper.GetProductItemList(string.Join(",", itemList.ToArray()));
+            string ids = string.Join(",", itemList.ToArray());
+            List<ProductItem> list = DataHelper.GetProductItemList(ids);
             MaxVal = list.Count;
             CurVal = 0;
             //切割10份开一个线程
@@ -168,6 +169,7 @@ namespace TaoBaoGuanJia.Service
             }
             Task.WaitAll(tasks);//等待线程执行完毕
             export.WriteDicToFile(csvPath, _outputList);
+            DataHelper.DeleteItemByIds(ids);
             ControlsUtils.SetProgressBarValue(list.Count, list.Count);
             ControlsUtils.OperationLog("淘宝助理CSV格式数据文件全部生成完毕！保存路径：" + csvPath);
             //for (int i = 0; i < list.Count; i++)

@@ -419,5 +419,13 @@ namespace TaoBaoGuanJia.Helper
             string strSql = "select * from  tb_userconfig  where configkey=@configkey";
             return conn.Query<tb_userconfig>(strSql, new tb_userconfig() {  configkey=key})?.FirstOrDefault();
         }
+        /// <summary>
+        /// 删除商品
+        /// </summary>
+        /// <param name="id"></param>
+        public static void DeleteItemByIds(string ids) {
+            string strSql = "delete from sp_item where id in ("+ids+")";
+            userConn.Execute(strSql, null);
+        }
     }
 }
